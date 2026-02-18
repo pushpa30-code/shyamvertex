@@ -14,6 +14,7 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
     });
     const [resumeFile, setResumeFile] = useState(null);
     const [status, setStatus] = useState('idle'); // idle, submitting, success, error
+    const [errorMessage, setErrorMessage] = useState('');
 
     if (!isOpen) return null;
 
@@ -22,6 +23,7 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
+        if (status === 'error') setStatus('idle'); // Clear error on change
     };
 
     const handleFileChange = (e) => {
@@ -33,6 +35,7 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('submitting');
+        setErrorMessage('');
 
         const data = new FormData();
         data.append('role', distinctRole);
@@ -55,6 +58,8 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
                 body: data,
             });
 
+            const result = await response.json();
+
             if (response.ok) {
                 setStatus('success');
                 setTimeout(() => {
@@ -67,11 +72,13 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
                 }, 2000);
             } else {
                 setStatus('error');
-                console.error('Server responded with error');
+                setErrorMessage(result.message || 'Failed to submit application.');
+                console.error('Server responded with error:', result);
             }
         } catch (error) {
             console.error('Error submitting form:', error);
             setStatus('error');
+            setErrorMessage('Network error. Please try again later.');
         }
     };
 
@@ -94,6 +101,12 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-4">
+                            {status === 'error' && (
+                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                    <strong className="font-bold">Error: </strong>
+                                    <span className="block sm:inline">{errorMessage}</span>
+                                </div>
+                            )}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
                                 <input

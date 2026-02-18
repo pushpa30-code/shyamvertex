@@ -24,15 +24,17 @@ const Contact = () => {
                 body: JSON.stringify(formData)
             });
 
+            const result = await response.json();
+
             if (response.ok) {
                 alert('Thank you for your message. We will get back to you soon!');
                 setFormData({ name: '', email: '', subject: '', message: '' });
             } else {
-                alert('Failed to send message. Please try again.');
+                alert(result.message || 'Failed to send message. Please try again.');
             }
         } catch (error) {
             console.error('Error sending message:', error);
-            alert('Error sending message.');
+            alert('Network error. Please try again later.');
         }
     };
 

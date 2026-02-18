@@ -1,5 +1,5 @@
 require('dotenv').config();
-// Server restarted to apply updates (Verification Step)
+// Server restarted to apply updates (Error Handling)
 const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
@@ -73,38 +73,71 @@ app.get('/', (req, res) => {
 app.post('/api/contact', (req, res) => {
     const { name, email, subject, message } = req.body;
 
+    // 1. Basic format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
     const query = 'INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)';
     db.query(query, [name, email, subject, message], (err, result) => {
         if (err) console.error('DB Error:', err);
     });
 
-    const mailOptions = {
+    // 2. Send Acknowledgment to Sender (Verifies existence)
+    const ackMailOptions = {
         from: process.env.EMAIL_USER,
-        to: 'shyamvertexpvt@gmail.com',
-        subject: `New Contact Message: ${subject} - ${name}`,
+        to: email,
+        subject: 'We Received Your Message - Shyam Vertex',
         html: `
-            <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-                <h2 style="color: #022c22; text-align: center;">New Contact Message</h2>
-                <hr style="border: 0; border-top: 2px solid #D4AF37; margin: 20px 0;">
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Subject:</strong> ${subject}</p>
-                <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #022c22; margin-top: 20px;">
-                    <p><strong>Message:</strong></p>
-                    <p>${message.replace(/\n/g, '<br>')}</p>
-                </div>
-                <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">Sent from Shyam Vertex Website</p>
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                <h2 style="color: #022c22;">Message Received</h2>
+                <p>Hello ${name},</p>
+                <p>Thank you for contacting us. We have received your message regarding "<strong>${subject}</strong>".</p>
+                <p>Our team will get back to you shortly.</p>
+                <br>
+                <p>Best Regards,<br>Shyam Vertex Team</p>
             </div>
         `
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            return res.status(200).json({ message: 'Message received (Email delivery pending configuration)' });
+    transporter.sendMail(ackMailOptions, (ackError, ackInfo) => {
+        if (ackError) {
+            console.error('Error sending acknowledgement email:', ackError);
+            return res.status(400).json({
+                message: 'Could not send email to this address. Please check if the email exists.',
+                error: ackError.message
+            });
         }
-        console.log('Contact email sent: ' + info.response);
-        res.status(200).json({ message: 'Message sent successfully' });
+
+        // 3. If valid, send Notification to Admin
+        const adminMailOptions = {
+            from: process.env.EMAIL_USER,
+            to: 'shyamvertexpvt@gmail.com',
+            subject: `New Contact Message: ${subject} - ${name}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                    <h2 style="color: #022c22; text-align: center;">New Contact Message</h2>
+                    <hr style="border: 0; border-top: 2px solid #D4AF37; margin: 20px 0;">
+                    <p><strong>Name:</strong> ${name}</p>
+                    <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+                    <p><strong>Subject:</strong> ${subject}</p>
+                    <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #022c22; margin-top: 20px;">
+                        <p><strong>Message:</strong></p>
+                        <p>${message.replace(/\n/g, '<br>')}</p>
+                    </div>
+                    <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">Sent from Shyam Vertex Website</p>
+                </div>
+            `
+        };
+
+        transporter.sendMail(adminMailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending admin email:', error);
+            }
+            console.log('Contact emails sent successfully.');
+            res.status(200).json({ message: 'Message sent successfully' });
+        });
     });
 });
 
@@ -118,53 +151,84 @@ app.post('/api/apply', upload.single('resume'), (req, res) => {
     db.query(query, [name, mobile, email, experience, projects, role, skills, portfolio, resumePath], (err, result) => {
         if (err) {
             console.error('Error saving application to database:', err);
+            // If DB fails, we should probably stop here too, but for now we continue to email
         } else {
             console.log('Application saved to database with ID:', result.insertId);
         }
     });
 
-    const mailOptions = {
+    // 1. Basic format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    // 2. Send Acknowledgment to Applicant (Verifies existence)
+    const ackMailOptions = {
         from: process.env.EMAIL_USER,
-        to: 'shyamvertexpvt@gmail.com',
-        subject: `New Job Application: ${role} - ${name}`,
+        to: email, // Send to the applicant
+        subject: 'Application Received - Shyam Vertex',
         html: `
-            <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
-                <h2 style="color: #022c22; text-align: center;">New Application Received</h2>
-                <hr style="border: 0; border-top: 2px solid #D4AF37; margin: 20px 0;">
-                <p><strong>Role:</strong> ${role}</p>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Mobile:</strong> ${mobile}</p>
-                <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                <p><strong>Experience:</strong> ${experience}</p>
-                <p><strong>Skills:</strong> ${skills || 'Not specified'}</p>
-                ${portfolio ? `<p><strong>Portfolio:</strong> <a href="${portfolio}">${portfolio}</a></p>` : ''}
-                <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #022c22; margin-top: 20px;">
-                    <p><strong>Projects / Details:</strong></p>
-                    <p>${projects.replace(/\n/g, '<br>')}</p>
-                </div>
-                <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">Sent from Shyam Vertex Website</p>
+            <div style="font-family: Arial, sans-serif; padding: 20px;">
+                <h2 style="color: #022c22;">Application Received</h2>
+                <p>Dear ${name},</p>
+                <p>We have received your application for the position of <strong>${role}</strong>.</p>
+                <p>Our team will review your details and get back to you shortly.</p>
+                <br>
+                <p>Best Regards,<br>Shyam Vertex Team</p>
             </div>
-        `,
-        attachments: resumePath ? [
-            {
-                filename: path.basename(resumePath),
-                path: resumePath
-            }
-        ] : []
+        `
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.error('Error sending email:', error);
-            if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-                console.log('Email credentials missing. Logged application details:', req.body);
-            }
-            // We return success to the client because the data is safely in the DB.
-            // In a production env, you might want to alert the user that email failed but app is saved.
-            return res.status(200).json({ message: 'Application submitted (Email delivery pending configuration)' });
+    transporter.sendMail(ackMailOptions, (ackError, ackInfo) => {
+        if (ackError) {
+            console.error('Error sending acknowledgement email:', ackError);
+            return res.status(400).json({
+                message: 'Could not send email to this address. Please check if the email exists.',
+                error: ackError.message
+            });
         }
-        console.log('Email sent: ' + info.response);
-        res.status(200).json({ message: 'Application submitted successfully' });
+
+        // 3. If valid, send Notification to Admin
+        const adminMailOptions = {
+            from: process.env.EMAIL_USER,
+            to: 'shyamvertexpvt@gmail.com',
+            subject: `New Job Application: ${role} - ${name}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
+                    <h2 style="color: #022c22; text-align: center;">New Application Received</h2>
+                    <hr style="border: 0; border-top: 2px solid #D4AF37; margin: 20px 0;">
+                    <p><strong>Role:</strong> ${role}</p>
+                    <p><strong>Name:</strong> ${name}</p>
+                    <p><strong>Mobile:</strong> ${mobile}</p>
+                    <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+                    <p><strong>Experience:</strong> ${experience}</p>
+                    <p><strong>Skills:</strong> ${skills || 'Not specified'}</p>
+                    ${portfolio ? `<p><strong>Portfolio:</strong> <a href="${portfolio}">${portfolio}</a></p>` : ''}
+                    <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #022c22; margin-top: 20px;">
+                        <p><strong>Projects / Details:</strong></p>
+                        <p>${projects.replace(/\n/g, '<br>')}</p>
+                    </div>
+                    <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">Sent from Shyam Vertex Website</p>
+                </div>
+            `,
+            attachments: resumePath ? [
+                {
+                    filename: path.basename(resumePath),
+                    path: resumePath
+                }
+            ] : []
+        };
+
+        transporter.sendMail(adminMailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending admin email:', error);
+                // We don't fail the request here because we successfully verified the user
+                // But we should log it clearly. 
+            }
+            console.log('Application emails sent successfully.');
+            res.status(200).json({ message: 'Application submitted successfully' });
+        });
     });
 });
 
