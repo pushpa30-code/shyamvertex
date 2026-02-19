@@ -25,22 +25,7 @@ const CareerPage = () => {
                     console.error('API Error:', data);
                 }
             })
-            .catch(err => {
-                console.log('API unavailable, checking local storage:', err.message);
-                const savedJobs = localStorage.getItem('jobSettings');
-                if (savedJobs) {
-                    try {
-                        const parsedJobs = JSON.parse(savedJobs);
-                        const statusMap = {};
-                        parsedJobs.forEach(job => {
-                            statusMap[job.role_id] = job.is_hiring;
-                        });
-                        setJobStatuses(statusMap);
-                    } catch (e) {
-                        console.error('Error parsing local storage:', e);
-                    }
-                }
-            });
+            .catch(err => console.error('Error fetching job statuses:', err));
     }, []);
 
     const openForm = (role) => {

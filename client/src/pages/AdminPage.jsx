@@ -26,25 +26,16 @@ const AdminPage = () => {
         fetch(`${API_URL}/api/jobs`)
             .then(res => res.json())
             .then(data => {
-                if (Array.isArray(data) && data.length > 0) {
+                if (Array.isArray(data)) {
                     setJobStatuses(data);
-                    // Sync successful fetch to local storage
-                    localStorage.setItem('jobSettings', JSON.stringify(data));
                 } else {
-                    console.log('Empty API response, using local storage fallback');
-                    throw new Error('Empty API response');
+                    console.error('API Error:', data);
+                    setJobStatuses([]);
                 }
                 setLoading(false);
             })
             .catch(err => {
-                console.log('Using local storage fallback due to:', err.message);
-                const savedJobs = localStorage.getItem('jobSettings');
-                if (savedJobs) {
-                    setJobStatuses(JSON.parse(savedJobs));
-                } else {
-                    setJobStatuses(DEFAULT_JOBS);
-                    localStorage.setItem('jobSettings', JSON.stringify(DEFAULT_JOBS));
-                }
+                console.error('Error fetching jobs:', err);
                 setLoading(false);
             });
     };
@@ -61,21 +52,25 @@ const AdminPage = () => {
     const toggleStatus = (role_id, currentStatus) => {
         const newStatus = !currentStatus;
 
-        // 1. Update State & Local Storage immediately (Optimistic + Offline support)
-        const updatedJobs = jobStatuses.map(job =>
+        // Optimistic update
+        setJobStatuses(prev => prev.map(job =>
             job.role_id === role_id ? { ...job, is_hiring: newStatus } : job
-        );
-        setJobStatuses(updatedJobs);
-        localStorage.setItem('jobSettings', JSON.stringify(updatedJobs));
+        ));
 
-        // 2. Try to update backend (Fire and forget style, identifying errors only in console)
         fetch(`${API_URL}/api/jobs/update`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ role_id, is_hiring: newStatus })
-        }).catch(err => {
-            console.error('Backend update failed (changes saved locally):', err);
-        });
+        })
+            .then(res => res.json())
+            .then(data => {
+                // success
+            })
+            .catch(err => {
+                console.error('Error updating status:', err);
+                // Revert on error
+                fetchJobs();
+            });
     };
 
     if (!isAuthenticated) {
