@@ -54,15 +54,28 @@ const Footer = () => {
                         <ul className="space-y-4">
                             <li className="flex items-start">
                                 <Mail className="h-5 w-5 text-secondary mr-3 mt-1" />
-                                <span className="text-gray-300">shyamvertexpvt@gmail.com</span>
+                                <a href="mailto:shyamvertexpvt@gmail.com" className="text-gray-300 hover:text-secondary transition-colors">
+                                    shyamvertexpvt@gmail.com
+                                </a>
                             </li>
                             <li className="flex items-start">
                                 <Phone className="h-5 w-5 text-secondary mr-3 mt-1" />
-                                <span className="text-gray-300">+91 8799303431 / 9136462029</span>
+                                <span className="text-gray-300">
+                                    <a href="tel:+918799303431" className="hover:text-secondary transition-colors">+91 87993-03431</a>
+                                    {' / '}
+                                    <a href="tel:+919136462029" className="hover:text-secondary transition-colors">91364-62029</a>
+                                </span>
                             </li>
                             <li className="flex items-start">
                                 <MapPin className="h-5 w-5 text-secondary mr-3 mt-1" />
-                                <span className="text-gray-300">Vadodara,Gujarat-390019</span>
+                                <a
+                                    href="https://www.google.com/maps/search/?api=1&query=Vadodara+Gujarat+390019"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-gray-300 hover:text-secondary transition-colors"
+                                >
+                                    Vadodara, Gujarat-390019
+                                </a>
                             </li>
                         </ul>
                     </div>

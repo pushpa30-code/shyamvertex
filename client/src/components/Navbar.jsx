@@ -1,35 +1,48 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronRight } from 'lucide-react';
 import logo from '../images/logo.png';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'About', path: '/#about' },
         { name: 'Services', path: '/#services' },
-        { name: 'Careers', path: '/#careers' },
+        { name: 'Careers', path: '/career' },
         { name: 'Help', path: '/#faq' },
         { name: 'Contact Us', path: '/#contact' },
     ];
 
     const scrollToSection = (path) => {
         setIsOpen(false);
-        if (path.startsWith('/#')) {
-            const id = path.replace('/#', '');
-            if (window.location.pathname === '/') {
+
+        // Handle direct routes (non-hash)
+        if (!path.startsWith('/#')) {
+            navigate(path);
+            window.scrollTo(0, 0);
+            return;
+        }
+
+        // Handle hash routes
+        const id = path.replace('/#', '');
+        if (location.pathname === '/') {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else {
+            // Navigate to home then scroll
+            navigate('/');
+            setTimeout(() => {
                 const element = document.getElementById(id);
                 if (element) {
                     element.scrollIntoView({ behavior: 'smooth' });
                 }
-            } else {
-                window.location.href = path; // Native navigate to handle hash
-            }
-        } else {
-            // For normal routes like /career
-            window.location.href = path;
+            }, 100);
         }
     };
 
@@ -49,7 +62,7 @@ const Navbar = () => {
                             {navLinks.map((link) => (
                                 <button
                                     key={link.name}
-                                    onClick={() => scrollToSection(link.path === '/#careers' ? '/career' : link.path)}
+                                    onClick={() => scrollToSection(link.path)}
                                     className="text-gray-300 hover:text-secondary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 border-b-2 border-transparent hover:border-secondary cursor-pointer bg-transparent border-0"
                                 >
                                     {link.name}
@@ -75,7 +88,7 @@ const Navbar = () => {
                         {navLinks.map((link) => (
                             <button
                                 key={link.name}
-                                onClick={() => scrollToSection(link.path === '/#careers' ? '/career' : link.path)}
+                                onClick={() => scrollToSection(link.path)}
                                 className="w-full text-left text-gray-300 hover:bg-white/5 hover:text-secondary block px-3 py-2 rounded-md text-base font-medium flex justify-between items-center transition-colors duration-300"
                             >
                                 {link.name}

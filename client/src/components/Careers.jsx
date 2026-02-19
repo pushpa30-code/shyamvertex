@@ -30,17 +30,17 @@ const Careers = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
                     {[
                         {
-                            icon: <Users className="w-10 h-10 text-accent" />,
+                            icon: <Users className="w-10 h-10 text-secondary" />,
                             title: "Great Culture",
                             description: "Work with passionate people in a supportive and collaborative environment."
                         },
                         {
-                            icon: <Zap className="w-10 h-10 text-accent" />,
+                            icon: <Zap className="w-10 h-10 text-secondary" />,
                             title: "Fast Growth",
                             description: "Accelerate your career with challenging projects and continuous learning."
                         },
                         {
-                            icon: <Briefcase className="w-10 h-10 text-accent" />,
+                            icon: <Briefcase className="w-10 h-10 text-secondary" />,
                             title: "Impactful Work",
                             description: "Build solutions that matter and make a real difference in the world."
                         }

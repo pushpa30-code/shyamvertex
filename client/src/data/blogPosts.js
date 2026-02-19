@@ -3,8 +3,8 @@ export const blogPosts = [
         id: 1,
         title: 'The Future of AI in Web Development',
         excerpt: 'How artificial intelligence is reshaping the way we build and interact with websites.',
-        date: 'Oct 15, 2023',
-        author: 'Admin',
+        date: 'Feb 15, 2026',
+        author: 'Amit Sharma',
         image: 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&q=80&w=500',
         content: `
             <p>Artificial Intelligence (AI) is no longer just a buzzword; it's a fundamental shift in how we approach web development. From automated code generation to personalized user experiences, AI is touching every aspect of the industry.</p>
@@ -28,8 +28,8 @@ export const blogPosts = [
         id: 2,
         title: 'Why UI/UX Design Matters for SEO',
         excerpt: 'Explaining the critical link between user experience and search engine rankings.',
-        date: 'Sep 28, 2023',
-        author: 'Jane Doe',
+        date: 'Jan 28, 2026',
+        author: 'Priya Patel',
         image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&q=80&w=500',
         content: `
             <p>Search Engine Optimization (SEO) and User Experience (UX) Design were once thought of as separate disciplines. Today, they are inextricably linked. Google's algorithms heavily favor sites that provide a great user experience.</p>
@@ -53,8 +53,8 @@ export const blogPosts = [
         id: 3,
         title: 'Migrating to the Cloud: A Guide',
         excerpt: 'Key considerations and steps for businesses looking to move their infrastructure to the cloud.',
-        date: 'Sep 10, 2023',
-        author: 'John Smith',
+        date: 'Jan 10, 2026',
+        author: 'Vikram Singh',
         image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=500',
         content: `
             <p>Cloud migration is the process of moving an organization's digital assets, services, databases, IT resources, and applications either partially, or wholly, into the cloud.</p>
