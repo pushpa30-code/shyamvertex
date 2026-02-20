@@ -67,14 +67,8 @@ db.connect((err) => {
 
 // Email Transporter Configuration
 const dns = require('dns');
-// Force IPv4 DNS resolution order if supported
-if (dns.setDefaultResultOrder) {
-    dns.setDefaultResultOrder('ipv4first');
-}
 
-// Email Transporter Configuration
-// Email Transporter Configuration
-// Initialize with default (will be upgraded to IPv4 dynamically)
+// Initialize with default (fallback)
 let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -84,7 +78,7 @@ let transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS
     },
     tls: {
-        servername: 'smtp.gmail.com' // Explicitly set SNI for SSL validation
+        servername: 'smtp.gmail.com'
     },
     family: 4, // Prefer IPv4
     connectionTimeout: 10000,
@@ -92,27 +86,33 @@ let transporter = nodemailer.createTransport({
     socketTimeout: 15000
 });
 
-// Manually resolve to IPv4 and RE-CREATE transporter to force usage
-// This fixes the ENETUNREACH error by strictly bypassing IPv6
+// Optimization: Try to resolve IPv4 directly to bypass IPv6 issues (Production Fix)
 dns.resolve4('smtp.gmail.com', (err, addresses) => {
     if (!err && addresses && addresses.length > 0) {
-        console.log(`Resolved smtp.gmail.com to IPv4: ${addresses[0]} - Re-initializing Transporter`);
-        transporter = nodemailer.createTransport({
-            host: addresses[0], // Use IP directly
-            port: 465,
-            secure: true,
-            auth: {
-                user: process.env.EMAIL_USER,
-                pass: process.env.EMAIL_PASS
-            },
-            tls: { servername: 'smtp.gmail.com' }, // SNI required when using IP
-            family: 4,
-            connectionTimeout: 10000,
-            greetingTimeout: 5000,
-            socketTimeout: 15000
-        });
+        console.log(`[Email] Resolved smtp.gmail.com to IPv4: ${addresses[0]} - Using direct IP.`);
+        try {
+            // Re-initialize transporter with direct IP
+            transporter = nodemailer.createTransport({
+                host: addresses[0],
+                port: 465,
+                secure: true,
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS
+                },
+                tls: { servername: 'smtp.gmail.com' },
+                family: 4,
+                connectionTimeout: 10000,
+                greetingTimeout: 5000,
+                socketTimeout: 15000
+            });
+        } catch (e) {
+            console.warn('[Email] Failed to update transporter with IP:', e.message);
+        }
     } else {
-        console.error('Failed to resolve smtp.gmail.com to IPv4:', err);
+        // This is expected locally if DNS is restricted, but critical for Prod
+        console.log('[Email] DNS resolution skipped or failed, using default hostname (standard mode).');
+        if (err) console.log(`[Email] DNS Info: ${err.code}`);
     }
 });
 
