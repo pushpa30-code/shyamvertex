@@ -105,7 +105,7 @@ app.post('/api/contact', (req, res) => {
             // Admin Notification (Priority)
             const adminData = await resend.emails.send({
                 from: 'Shyam Vertex <onboarding@resend.dev>',
-                to: 'shyamvertexpvt@gmail.com',
+                to: 'pushpa30102040@gmail.com', // Restricted to this address in Resend Testing Mode
                 subject: `New Contact Message: ${subject} - ${name}`,
                 html: `
                     <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
@@ -262,7 +262,7 @@ app.post('/api/apply', upload.single('resume'), async (req, res) => {
             // Execute Admin Email
             const adminData = await resend.emails.send({
                 from: 'Shyam Vertex <onboarding@resend.dev>',
-                to: 'shyamvertexpvt@gmail.com', // Guaranteed to work if this is the account owner
+                to: 'pushpa30102040@gmail.com', // Restricted to this address in Resend Testing Mode // Guaranteed to work if this is the account owner
                 subject: `New Job Application: ${role} - ${name}`,
                 html: adminContent,
                 attachments: adminAttachments
@@ -351,7 +351,7 @@ app.get('/api/debug/send-test-email', async (req, res) => {
     try {
         const data = await resend.emails.send({
             from: 'Shyam Vertex <onboarding@resend.dev>',
-            to: 'shyamvertexpvt@gmail.com', // Verified address
+            to: 'pushpa30102040@gmail.com', // Restricted to this address in Resend Testing Mode // Verified address
             subject: 'Debug Test Email from Resend',
             html: '<strong>It works!</strong> The server can now send emails bypasssing the firewall.'
         });
