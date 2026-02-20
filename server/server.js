@@ -66,6 +66,13 @@ db.connect((err) => {
 });
 
 // Email Transporter Configuration
+const dns = require('dns');
+// Force IPv4 DNS resolution order if supported
+if (dns.setDefaultResultOrder) {
+    dns.setDefaultResultOrder('ipv4first');
+}
+
+// Email Transporter Configuration
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -74,12 +81,24 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     },
+    tls: {
+        servername: 'smtp.gmail.com' // Explicitly set SNI for SSL validation
+    },
     family: 4, // Prefer IPv4
-    localAddress: '0.0.0.0', // Force binding to IPv4 interface
     // Connection timeout settings
     connectionTimeout: 10000, // 10 seconds
     greetingTimeout: 5000,
     socketTimeout: 15000
+});
+
+// Manually resolve to IPv4 to guarantee connection success
+dns.resolve4('smtp.gmail.com', (err, addresses) => {
+    if (!err && addresses && addresses.length > 0) {
+        console.log(`Resolved smtp.gmail.com to IPv4: ${addresses[0]}`);
+        transporter.options.host = addresses[0]; // Force usage of the resolved IP
+    } else {
+        console.error('Failed to resolve smtp.gmail.com to IPv4:', err);
+    }
 });
 
 // Routes
