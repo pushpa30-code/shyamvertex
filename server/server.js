@@ -327,6 +327,17 @@ app.get('/api/services', (req, res) => {
     res.json(services);
 });
 
+// Debug Route to check server configuration (remove in production if sensitive)
+app.get('/api/debug/status', (req, res) => {
+    res.json({
+        status: 'online',
+        timestamp: new Date().toISOString(),
+        dbConnected: dbConnected,
+        emailConfigured: !!(process.env.EMAIL_USER && process.env.EMAIL_PASS),
+        emailUserPrefix: process.env.EMAIL_USER ? process.env.EMAIL_USER.substring(0, 3) + '***' : null
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
