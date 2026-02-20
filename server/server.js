@@ -73,7 +73,9 @@ if (dns.setDefaultResultOrder) {
 }
 
 // Email Transporter Configuration
-const transporter = nodemailer.createTransport({
+// Email Transporter Configuration
+// Initialize with default (will be upgraded to IPv4 dynamically)
+let transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
     secure: true, // Use SSL
@@ -85,17 +87,30 @@ const transporter = nodemailer.createTransport({
         servername: 'smtp.gmail.com' // Explicitly set SNI for SSL validation
     },
     family: 4, // Prefer IPv4
-    // Connection timeout settings
-    connectionTimeout: 10000, // 10 seconds
+    connectionTimeout: 10000,
     greetingTimeout: 5000,
     socketTimeout: 15000
 });
 
-// Manually resolve to IPv4 to guarantee connection success
+// Manually resolve to IPv4 and RE-CREATE transporter to force usage
+// This fixes the ENETUNREACH error by strictly bypassing IPv6
 dns.resolve4('smtp.gmail.com', (err, addresses) => {
     if (!err && addresses && addresses.length > 0) {
-        console.log(`Resolved smtp.gmail.com to IPv4: ${addresses[0]}`);
-        transporter.options.host = addresses[0]; // Force usage of the resolved IP
+        console.log(`Resolved smtp.gmail.com to IPv4: ${addresses[0]} - Re-initializing Transporter`);
+        transporter = nodemailer.createTransport({
+            host: addresses[0], // Use IP directly
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.EMAIL_USER,
+                pass: process.env.EMAIL_PASS
+            },
+            tls: { servername: 'smtp.gmail.com' }, // SNI required when using IP
+            family: 4,
+            connectionTimeout: 10000,
+            greetingTimeout: 5000,
+            socketTimeout: 15000
+        });
     } else {
         console.error('Failed to resolve smtp.gmail.com to IPv4:', err);
     }
