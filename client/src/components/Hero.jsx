@@ -8,19 +8,25 @@ const Hero = () => {
     return (
         <section className="relative min-h-screen flex items-center justify-center bg-dark overflow-hidden">
             {/* Background Video */}
-            <div className="absolute inset-0 z-0 pointer-events-none">
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
                 <video
                     autoPlay
                     loop
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full h-full object-cover opacity-80"
-                    style={{ willChange: 'transform' }}
+                    className="w-full h-full object-cover opacity-50 transition-opacity duration-1000"
+                    style={{
+                        willChange: 'transform',
+                        filter: 'brightness(0.5) contrast(1.1)'
+                    }}
                 >
                     <source src={handshakeVideo} type="video/mp4" />
                 </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent"></div>
+                {/* Dark Overlay Layers */}
+                <div className="absolute inset-0 bg-dark/40"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-dark/20 via-transparent to-dark"></div>
+                <div className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-dark to-transparent"></div>
             </div>
 
             <div className="container mx-auto px-4 z-10 text-center relative pt-20">
