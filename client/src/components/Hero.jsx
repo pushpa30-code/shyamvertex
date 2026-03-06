@@ -14,7 +14,9 @@ const Hero = () => {
                     loop
                     muted
                     playsInline
+                    preload="auto"
                     className="w-full h-full object-cover opacity-80"
+                    style={{ willChange: 'transform' }}
                 >
                     <source src={handshakeVideo} type="video/mp4" />
                 </video>
