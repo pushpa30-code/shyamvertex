@@ -54,20 +54,21 @@ const AdminJobs = () => {
     if (loading) return <div className="text-center py-8">Loading jobs...</div>;
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Manage Job Hiring Status</h2>
+        <div className="bg-charcoal p-8 rounded-[2rem] border border-white/5">
+            <h2 className="text-2xl font-black text-white mb-8 border-l-4 border-primary pl-4 uppercase tracking-tight">Hiring Console</h2>
             <div className="space-y-4">
                 {jobStatuses.length === 0 ? (
-                    <div className="text-center py-12 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-                        <p className="text-gray-500">No job roles found. Please check your database connection.</p>
+                    <div className="text-center py-20 bg-dark rounded-[2rem] border-2 border-dashed border-white/10">
+                        <p className="text-accent font-bold uppercase tracking-widest text-sm opacity-50">No job roles found</p>
                     </div>
                 ) : (
                     jobStatuses.map((job) => (
-                        <div key={job.role_id} className="flex flex-col sm:flex-row items-center justify-between p-4 bg-white rounded-lg border border-gray-200 shadow-sm hover:shadow-md transition-shadow gap-4">
+                        <div key={job.role_id} className="flex flex-col sm:flex-row items-center justify-between p-6 bg-dark rounded-[2rem] border border-white/5 shadow-2xl hover:border-primary/30 transition-all duration-300 gap-6">
                             <div className="text-center sm:text-left">
-                                <h3 className="text-lg font-bold text-gray-800">{job.label}</h3>
-                                <div className={`mt-1 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${job.is_hiring ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                                    {job.is_hiring ? 'Active · Hiring Open' : 'Inactive · Hiring Closed'}
+                                <h3 className="text-xl font-bold text-white mb-2">{job.label}</h3>
+                                <div className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] ${job.is_hiring ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-red-500/10 text-red-400 border border-red-500/20'}`}>
+                                    <span className={`w-1.5 h-1.5 rounded-full mr-2 ${job.is_hiring ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></span>
+                                    {job.is_hiring ? 'Recruitment Active' : 'Recruitment Paused'}
                                 </div>
                             </div>
 
@@ -79,10 +80,12 @@ const AdminJobs = () => {
                                         checked={job.is_hiring}
                                         onChange={() => toggleStatus(job.role_id, job.is_hiring)}
                                     />
-                                    <div className={`w-14 h-7 bg-gray-200 rounded-full peer peer-focus:ring-2 peer-focus:ring-primary transition-colors ${job.is_hiring ? 'bg-green-500' : ''}`}></div>
-                                    <div className={`absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition-transform ${job.is_hiring ? 'translate-x-7' : ''}`}></div>
-                                    <span className="ml-3 text-sm font-medium text-gray-700 sm:hidden">
-                                        {job.is_hiring ? 'Turn Off' : 'Turn On'}
+                                    <div className={`w-16 h-8 bg-white/5 rounded-full peer peer-focus:ring-2 peer-focus:ring-primary transition-all duration-300 ${job.is_hiring ? 'bg-primary' : ''}`}></div>
+                                    <div className={`absolute left-1 top-1 w-6 h-6 rounded-half flex items-center justify-center bg-white shadow-xl transition-all duration-300 ${job.is_hiring ? 'translate-x-8 scale-90' : 'scale-75 opacity-50'}`}>
+                                        <div className={`w-2 h-2 rounded-full ${job.is_hiring ? 'bg-dark' : 'bg-dark'}`}></div>
+                                    </div>
+                                    <span className="ml-4 text-xs font-black uppercase tracking-widest text-accent sm:hidden">
+                                        {job.is_hiring ? 'Active' : 'Paused'}
                                     </span>
                                 </label>
                             </div>
@@ -90,8 +93,9 @@ const AdminJobs = () => {
                     ))
                 )}
             </div>
-            <div className="mt-8 p-4 bg-blue-50 rounded-lg text-sm text-blue-700">
-                <strong>Note:</strong> Changes are applied immediately to the Career page.
+            <div className="mt-10 p-6 bg-primary/5 rounded-2xl text-xs text-primary border border-primary/20 font-bold uppercase tracking-widest flex items-center gap-3">
+                <Shield className="w-5 h-5" />
+                <span>Changes are pushed to live production immediately.</span>
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { X, Upload } from 'lucide-react';
+import { X, Upload, Shield } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import API_URL from '../config';
 
@@ -85,162 +86,176 @@ const ApplicationForm = ({ isOpen, onClose, distinctRole }) => {
     };
 
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto py-10">
-            <div className="bg-white rounded-lg shadow-xl w-full max-w-lg mx-4 relative my-auto">
-                <div className="flex justify-between items-center p-4 border-b border-gray-200 sticky top-0 bg-white z-10 rounded-t-lg">
-                    <h3 className="text-xl font-semibold text-primary">Apply for {distinctRole}</h3>
-                    <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-dark/95 backdrop-blur-xl overflow-y-auto py-10">
+            <div className="bg-charcoal border border-white/10 rounded-[2.5rem] shadow-2xl w-full max-w-lg mx-4 relative my-auto overflow-hidden">
+                <div className="flex justify-between items-center p-8 border-b border-white/5 sticky top-0 bg-charcoal/80 backdrop-blur-md z-10">
+                    <h3 className="text-xl font-black text-white uppercase tracking-tight">Apply / <span className="text-primary italic">{distinctRole}</span></h3>
+                    <button onClick={onClose} className="text-accent hover:text-primary transition-colors">
                         <X size={24} />
                     </button>
                 </div>
 
                 <div className="p-6 max-h-[80vh] overflow-y-auto">
                     {status === 'success' ? (
-                        <div className="text-center py-8">
-                            <div className="text-green-500 text-5xl mb-4">✓</div>
-                            <h4 className="text-2xl font-bold text-gray-800">Application Sent!</h4>
-                            <p className="text-gray-600 mt-2">Thank you for applying. We will reach out to you soon.</p>
+                        <div className="text-center py-12">
+                            <motion.div
+                                initial={{ scale: 0 }}
+                                animate={{ scale: 1 }}
+                                className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 border border-primary/20"
+                            >
+                                <div className="text-primary text-4xl">✓</div>
+                            </motion.div>
+                            <h4 className="text-2xl font-black text-white uppercase tracking-tight">Application Sent!</h4>
+                            <p className="text-accent mt-3 font-medium">Your credentials have been transmitted to our recruitment matrix.</p>
                         </div>
                     ) : (
                         <form onSubmit={handleSubmit} className="space-y-4">
                             {status === 'error' && (
-                                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                    <strong className="font-bold">Error: </strong>
-                                    <span className="block sm:inline">{errorMessage}</span>
+                                <div className="bg-red-500/10 border border-red-500/20 text-red-400 px-6 py-4 rounded-2xl text-xs font-bold uppercase tracking-widest" role="alert">
+                                    <strong className="font-black">Error: </strong>
+                                    <span>{errorMessage}</span>
                                 </div>
                             )}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Full Name</label>
                                 <input
                                     type="text"
                                     name="name"
                                     required
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
+                                    className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
                                     placeholder="John Doe"
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Mobile Number *</label>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Mobile Number</label>
                                     <input
                                         type="tel"
                                         name="mobile"
                                         required
                                         value={formData.mobile}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
-                                        placeholder="+91 98765 43210"
+                                        className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                                        placeholder="+91 00000 00000"
                                     />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Email Address *</label>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Email Address</label>
                                     <input
                                         type="email"
                                         name="email"
                                         required
                                         value={formData.email}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
-                                        placeholder="john@example.com"
+                                        className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                                        placeholder="john@vertex.sh"
                                     />
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Key Skills *</label>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Key Skills</label>
                                 <input
                                     type="text"
                                     name="skills"
                                     required
                                     value={formData.skills}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
-                                    placeholder="React, Node.js, Python, Design..."
+                                    className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                                    placeholder="React, Node.js, AI, etc."
                                 />
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Experience (Years)</label>
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Experience (Years)</label>
                                 <input
                                     type="text"
                                     name="experience"
                                     value={formData.experience}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
-                                    placeholder="e.g. 2 years"
+                                    className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                                    placeholder="e.g. 5+ years"
                                 />
                             </div>
 
                             {/* Conditional Fields */}
                             {isFreelance ? (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Portfolio Link *</label>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Portfolio Link</label>
                                     <input
                                         type="url"
                                         name="portfolio"
                                         required
                                         value={formData.portfolio}
                                         onChange={handleChange}
-                                        className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
-                                        placeholder="https://yourportfolio.com"
+                                        className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                                        placeholder="https://portfolio.vertex.sh"
                                     />
                                 </div>
                             ) : (
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Resume / CV *</label>
-                                    <div className="flex items-center justify-center w-full">
-                                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
-                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                <Upload className="w-8 h-8 mb-3 text-gray-400" />
-                                                <p className="mb-2 text-sm text-gray-500"><span className="font-semibold">Click to upload</span></p>
-                                                <p className="text-xs text-gray-500">PDF, DOC, DOCX (MAX. 5MB)</p>
-                                            </div>
-                                            <input
-                                                ref={fileInputRef}
-                                                type="file"
-                                                className="hidden"
-                                                accept=".pdf,.doc,.docx"
-                                                onChange={handleFileChange}
-                                                required
-                                            />
-                                        </label>
+                                <div className="space-y-4">
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">Secure Transmission (CV)</label>
+                                        <div className="flex items-center justify-center w-full">
+                                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-white/10 border-dashed rounded-[2rem] cursor-pointer bg-dark hover:bg-dark/80 hover:border-primary/50 transition-all duration-300 group">
+                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                    <Upload className="w-8 h-8 mb-3 text-white/20 group-hover:text-primary transition-colors" />
+                                                    <p className="mb-1 text-xs text-white/40 font-black uppercase tracking-widest"><span className="text-primary">Click</span> to upload</p>
+                                                    <p className="text-[10px] text-white/20 font-bold uppercase">PDF, DOC (MAX. 5MB)</p>
+                                                </div>
+                                                <input
+                                                    ref={fileInputRef}
+                                                    type="file"
+                                                    className="hidden"
+                                                    accept=".pdf,.doc,.docx"
+                                                    onChange={handleFileChange}
+                                                    required
+                                                />
+                                            </label>
+                                        </div>
                                     </div>
                                     {resumeFile && (
-                                        <p className="text-sm text-green-600 mt-2 font-medium">Selected: {resumeFile.name}</p>
+                                        <p className="text-[10px] text-primary mt-2 font-black uppercase tracking-widest flex items-center gap-2">
+                                            <Shield size={12} />
+                                            Selected: {resumeFile.name}
+                                        </p>
                                     )}
                                 </div>
                             )}
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    {isFreelance ? 'Proposed Rate / Services' : 'Projects / Cover Letter'}
+                            <div className="space-y-2">
+                                <label className="text-[10px] font-black text-white/40 uppercase tracking-[0.2em] ml-1">
+                                    {isFreelance ? 'Proposed Services' : 'Cover Letter Matrix'}
                                 </label>
                                 <textarea
                                     name="projects"
-                                    rows="3"
+                                    rows="4"
                                     value={formData.projects}
                                     onChange={handleChange}
-                                    className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary bg-white"
-                                    placeholder={isFreelance ? "Describe your services and expected rate..." : "Tell us about your recent projects..."}
+                                    className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-medium resize-none"
+                                    placeholder={isFreelance ? "Describe your capabilities..." : "Why do you belong at Vertex?"}
                                 ></textarea>
                             </div>
 
                             <button
                                 type="submit"
                                 disabled={status === 'submitting'}
-                                className={`w-full py-3 px-4 rounded-md text-white font-medium ${status === 'submitting' ? 'bg-gray-400 cursor-not-allowed' : 'bg-primary hover:bg-primary/90'
-                                    } transition-colors duration-200`}
+                                className={`w-full py-5 rounded-2xl text-dark font-black uppercase tracking-widest text-sm transition-all duration-300 shadow-2xl ${status === 'submitting'
+                                    ? 'bg-white/10 text-white/20 cursor-not-allowed border border-white/5'
+                                    : 'bg-primary hover:bg-yellow-glow shadow-primary/20 transform hover:-translate-y-1'
+                                    }`}
                             >
-                                {status === 'submitting' ? 'Submitting...' : 'Submit Application'}
+                                {status === 'submitting' ? 'Transmitting...' : 'Transmit Application'}
                             </button>
                         </form>
-                    )}
-                </div>
-            </div>
-        </div>
+                    )
+                    }
+                </div >
+            </div >
+        </div >
     );
 };
 

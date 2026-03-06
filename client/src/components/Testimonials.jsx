@@ -21,25 +21,26 @@ const testimonials = [
 
 const Testimonials = () => {
     return (
-        <section id="testimonials" className="py-20 bg-primary text-white">
+        <section id="testimonials" className="py-28 bg-dark relative overflow-hidden">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">What Our Clients Say</h2>
-                    <div className="w-20 h-1 bg-secondary mx-auto"></div>
+                <div className="text-center mb-20">
+                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">What Our <span className="text-primary italic">Clients</span> Say</h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full"></div>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-slate-800 p-8 rounded-xl relative">
-                            <Quote className="h-10 w-10 text-secondary/20 absolute top-4 right-4" />
-                            <p className="text-gray-300 italic mb-6">"{testimonial.content}"</p>
-                            <div className="flex items-center">
-                                <div className="w-10 h-10 bg-secondary rounded-full flex items-center justify-center font-bold text-primary mr-3">
+                        <div key={index} className="bg-charcoal p-10 rounded-[2rem] relative border border-white/5 shadow-2xl hover:border-primary/20 transition-all duration-500 overflow-hidden group">
+                            <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-all duration-500"></div>
+                            <Quote className="h-12 w-12 text-primary/10 absolute top-6 right-6 group-hover:text-primary/20 transition-all duration-500" />
+                            <p className="text-accent italic mb-10 text-lg leading-relaxed relative z-10">"{testimonial.content}"</p>
+                            <div className="flex items-center relative z-10">
+                                <div className="w-14 h-14 bg-primary/10 border border-primary/20 rounded-2xl flex items-center justify-center font-bold text-primary mr-4 text-xl">
                                     {testimonial.name[0]}
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-white">{testimonial.name}</h4>
-                                    <p className="text-sm text-gray-400">{testimonial.role}</p>
+                                    <h4 className="font-bold text-white text-lg">{testimonial.name}</h4>
+                                    <p className="text-sm text-accent font-light">{testimonial.role}</p>
                                 </div>
                             </div>
                         </div>

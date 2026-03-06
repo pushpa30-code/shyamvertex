@@ -12,6 +12,7 @@ const Navbar = () => {
         { name: 'Home', path: '/' },
         { name: 'About', path: '/#about' },
         { name: 'Services', path: '/#services' },
+        { name: 'Products', path: '/product' },
         { name: 'Careers', path: '/career' },
         { name: 'Help', path: '/#faq' },
         { name: 'Contact Us', path: '/#contact' },
@@ -47,13 +48,13 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-primary text-white sticky top-0 z-50 shadow-xl border-b border-secondary/20">
+        <nav className="bg-dark/80 backdrop-blur-md text-white sticky top-0 z-50 shadow-2xl border-b border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <div className="flex items-center">
                         <Link to="/" className="flex items-center gap-2 group">
                             <img src={logo} alt="Shyam Vertex Logo" className="h-14 md:h-24 w-auto object-contain" />
-                            <span className="font-bold text-lg md:text-2xl tracking-tight text-white group-hover:text-secondary transition-colors duration-300">ShyamVertex</span>
+                            <span className="font-bold text-lg md:text-2xl tracking-tight text-white group-hover:text-primary transition-colors duration-300">ShyamVertex</span>
                         </Link>
                     </div>
 
@@ -63,7 +64,7 @@ const Navbar = () => {
                                 <button
                                     key={link.name}
                                     onClick={() => scrollToSection(link.path)}
-                                    className="text-gray-300 hover:text-secondary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 border-b-2 border-transparent hover:border-secondary cursor-pointer bg-transparent border-0"
+                                    className="text-accent hover:text-primary hover:bg-white/5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 border-b-2 border-transparent hover:border-primary cursor-pointer bg-transparent border-0"
                                 >
                                     {link.name}
                                 </button>
@@ -74,7 +75,7 @@ const Navbar = () => {
                     <div className="-mr-2 flex md:hidden">
                         <button
                             onClick={() => setIsOpen(!isOpen)}
-                            className="inline-flex items-center justify-center p-2 rounded-md text-secondary hover:text-white hover:bg-white/10 focus:outline-none transition-colors duration-300"
+                            className="inline-flex items-center justify-center p-2 rounded-md text-primary hover:text-white hover:bg-white/10 focus:outline-none transition-colors duration-300"
                         >
                             {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                         </button>
@@ -89,10 +90,10 @@ const Navbar = () => {
                             <button
                                 key={link.name}
                                 onClick={() => scrollToSection(link.path)}
-                                className="w-full text-left text-gray-300 hover:bg-white/5 hover:text-secondary block px-3 py-2 rounded-md text-base font-medium flex justify-between items-center transition-colors duration-300"
+                                className="w-full text-left text-accent hover:bg-white/5 hover:text-primary block px-3 py-2 rounded-md text-base font-medium flex justify-between items-center transition-colors duration-300"
                             >
                                 {link.name}
-                                <ChevronRight className="h-4 w-4 text-secondary" />
+                                <ChevronRight className="h-4 w-4 text-primary" />
                             </button>
                         ))}
                     </div>

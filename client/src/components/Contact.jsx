@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 import API_URL from '../config';
 
@@ -41,12 +42,12 @@ const Contact = () => {
     };
 
     return (
-        <section id="contact" className="py-20 bg-accent">
+        <section id="contact" className="py-28 bg-dark relative overflow-hidden">
             <div className="container mx-auto px-4">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Contact Us</h2>
-                    <div className="w-20 h-1 bg-secondary mx-auto"></div>
-                    <p className="mt-4 text-gray-600 max-w-2xl mx-auto">
+                <div className="text-center mb-20">
+                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Get In <span className="text-primary italic text-shadow-glow">Touch</span></h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full"></div>
+                    <p className="mt-8 text-accent max-w-2xl mx-auto text-xl font-light leading-relaxed">
                         Ready to start your next project? Get in touch with us today.
                     </p>
                 </div>
@@ -54,119 +55,99 @@ const Contact = () => {
                 <div className="grid md:grid-cols-2 gap-12">
                     {/* Contact Info */}
                     <div>
-                        <h3 className="text-2xl font-bold text-primary mb-6">Get In Touch</h3>
-                        <p className="text-gray-600 mb-8 leading-relaxed">
+                        <h3 className="text-3xl font-bold text-primary mb-8">Let's Connect</h3>
+                        <p className="text-accent text-lg mb-12 leading-relaxed font-light">
                             Whether you have a question about our services, pricing, or just want to say hello, we'd love to hear from you.
                         </p>
 
-                        <div className="space-y-6">
-                            <div className="flex items-start">
-                                <div className="bg-secondary/10 p-3 rounded-lg mr-4">
-                                    <Mail className="h-6 w-6 text-secondary" />
+                        <div className="space-y-10">
+                            {[
+                                { icon: <Mail className="h-8 w-8 text-primary" />, title: 'Email Us', info: 'shyamvertexpvt@gmail.com', href: 'mailto:shyamvertexpvt@gmail.com', sub: 'Always online' },
+                                { icon: <Phone className="h-8 w-8 text-primary" />, title: 'Call Us', info: '+91 87993-03431', href: 'tel:+918799303431', sub: 'Mon-Sat 9am-8pm' },
+                                { icon: <MapPin className="h-8 w-8 text-primary" />, title: 'Visit Us', info: 'Vadodara, Gujarat', href: '#', sub: 'India - 390019' }
+                            ].map((item, index) => (
+                                <div key={index} className="flex items-center group transition-all duration-500">
+                                    <div className="bg-charcoal p-5 rounded-2xl mr-6 border border-white/5 group-hover:border-primary/50 group-hover:bg-dark transition-all duration-300 shadow-xl group-hover:scale-110">
+                                        {item.icon}
+                                    </div>
+                                    <div>
+                                        <h4 className="text-xl font-bold text-white mb-1">{item.title}</h4>
+                                        <a href={item.href} className="text-accent hover:text-primary transition-colors text-lg flex flex-col">
+                                            <span>{item.info}</span>
+                                            <span className="text-xs uppercase tracking-widest text-white/30 font-bold mt-1">{item.sub}</span>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 className="font-semibold text-primary">Email Us</h4>
-                                    <a href="mailto:shyamvertexpvt@gmail.com" className="text-gray-600 hover:text-secondary transition-colors">
-                                        shyamvertexpvt@gmail.com
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start">
-                                <div className="bg-secondary/10 p-3 rounded-lg mr-4">
-                                    <Phone className="h-6 w-6 text-secondary" />
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-primary">Call Us</h4>
-                                    <p className="text-gray-600">
-                                        <a href="tel:+918799303431" className="hover:text-secondary transition-colors">+91 8799303431</a>
-                                        {' / '}
-                                        <a href="tel:+919136462029" className="hover:text-secondary transition-colors">+91 9136462029</a>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div className="flex items-start">
-                                <div className="bg-secondary/10 p-3 rounded-lg mr-4">
-                                    <MapPin className="h-6 w-6 text-secondary" />
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold text-primary">Visit Us</h4>
-                                    <a
-                                        href="https://www.google.com/maps/search/?api=1&query=Vadodara+Gujarat+390019"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-gray-600 hover:text-secondary transition-colors"
-                                    >
-                                        Vadodara, Gujarat-390019
-                                    </a>
-                                </div>
-                            </div>
+                            ))}
                         </div>
                     </div>
 
                     {/* Contact Form */}
-                    <div className="bg-white p-8 rounded-xl shadow-lg border border-secondary/20">
-                        <h3 className="text-2xl font-bold text-primary mb-6">Send Us a Message</h3>
-                        <form onSubmit={handleSubmit} className="space-y-4">
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                    <div className="bg-charcoal p-10 rounded-[2.5rem] border border-white/5 shadow-2xl relative group overflow-hidden">
+                        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px]"></div>
+                        <h3 className="text-2xl font-bold text-white mb-10 relative z-10 flex items-center gap-3">
+                            <span className="w-10 h-1 bg-primary rounded-full"></span>
+                            Send Us a <span className="text-primary">Message</span>
+                        </h3>
+                        <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
+                            <div className="grid md:grid-cols-2 gap-8">
+                                <div className="space-y-3">
+                                    <label className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">Username</label>
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full px-6 py-4 bg-dark border border-white/10 text-white rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-white/20"
+                                        placeholder="Full Name"
+                                    />
+                                </div>
+                                <div className="space-y-3">
+                                    <label className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">Email</label>
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full px-6 py-4 bg-dark border border-white/10 text-white rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-white/20"
+                                        placeholder="your@email.com"
+                                    />
+                                </div>
+                            </div>
+                            <div className="space-y-3">
+                                <label className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">Project Subject</label>
                                 <input
                                     type="text"
-                                    id="name"
-                                    name="name"
-                                    value={formData.name}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
-                                    placeholder="John Doe"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    required
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
-                                    placeholder="john@example.com"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                                <input
-                                    type="text"
-                                    id="subject"
                                     name="subject"
                                     value={formData.subject}
                                     onChange={handleChange}
                                     required
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
-                                    placeholder="Project Inquiry"
+                                    className="w-full px-6 py-4 bg-dark border border-white/10 text-white rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-white/20"
+                                    placeholder="What are you interested in?"
                                 />
                             </div>
-                            <div>
-                                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                            <div className="space-y-3">
+                                <label className="text-xs font-bold text-white/50 uppercase tracking-widest ml-1">More Details</label>
                                 <textarea
-                                    id="message"
                                     name="message"
                                     value={formData.message}
                                     onChange={handleChange}
                                     required
-                                    rows="4"
-                                    className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all"
-                                    placeholder="Tell us about your project..."
+                                    rows="5"
+                                    className="w-full px-6 py-4 bg-dark border border-white/10 text-white rounded-2xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder-white/20 resize-none"
+                                    placeholder="Tell us about your project goals..."
                                 ></textarea>
                             </div>
-                            <button
+                            <motion.button
+                                whileHover={{ scale: 1.02, boxShadow: "0 0 40px rgba(255,208,0,0.3)" }}
+                                whileTap={{ scale: 0.98 }}
                                 type="submit"
-                                className="w-full bg-secondary text-primary font-bold py-3 rounded-lg hover:bg-primary hover:text-white transition-all transform hover:scale-[1.02] flex items-center justify-center gap-2 shadow-md"
+                                className="w-full bg-primary text-dark font-black py-5 rounded-2xl hover:bg-yellow-glow transition-all flex items-center justify-center gap-3 text-lg uppercase tracking-widest shadow-2xl"
                             >
-                                Send Message <Send className="h-5 w-5" />
-                            </button>
+                                Send Message <Send className="h-6 w-6" />
+                            </motion.button>
                         </form>
                     </div>
                 </div>

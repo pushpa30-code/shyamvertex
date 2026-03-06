@@ -42,19 +42,19 @@ const CareerPage = () => {
         {
             id: 'fulltime',
             title: 'Full-time',
-            icon: <Briefcase className="w-12 h-12 text-secondary" />,
+            icon: <Briefcase className="w-12 h-12 text-primary" />,
             description: 'Join our core team and build the future of tech with us. Competitive salary and benefits.',
         },
         {
             id: 'internship',
             title: 'Internship',
-            icon: <Clock className="w-12 h-12 text-secondary" />,
+            icon: <Clock className="w-12 h-12 text-primary" />,
             description: 'Start your career with hands-on experience on real-world projects. Mentorship included.',
         },
         {
             id: 'freelance',
             title: 'Freelance',
-            icon: <Globe className="w-12 h-12 text-secondary" />,
+            icon: <Globe className="w-12 h-12 text-primary" />,
             description: 'Work flexibly on exciting projects from anywhere in the world.',
         }
     ];
@@ -79,22 +79,22 @@ const CareerPage = () => {
     };
 
     return (
-        <div className="bg-background min-h-screen py-20 px-4 sm:px-6 lg:px-8">
+        <div className="bg-dark min-h-screen py-32 px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-16">
+                <div className="text-center mb-20">
                     <motion.h1
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
-                        className="text-4xl md:text-5xl font-bold text-primary mb-4"
+                        className="text-4xl md:text-6xl font-black text-white mb-6 uppercase tracking-tight"
                     >
-                        Join Our Team
+                        Join Our <span className="text-primary italic">Team</span>
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-xl text-gray-600 max-w-2xl mx-auto"
+                        className="text-xl text-accent max-w-3xl mx-auto font-light leading-relaxed"
                     >
                         Explore opportunities to grow with ShyamVertex. We are looking for passionate individuals to join our journey.
                     </motion.p>
@@ -113,8 +113,8 @@ const CareerPage = () => {
                             <motion.div
                                 key={career.id}
                                 variants={itemVariants}
-                                whileHover={{ y: -10, transition: { duration: 0.2 } }}
-                                className="relative bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 flex flex-col items-center text-center border-t-4 border-accent"
+                                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                                className="relative bg-charcoal rounded-[2.5rem] shadow-2xl hover:shadow-[0_0_40px_rgba(255,208,0,0.1)] transition-all duration-500 p-10 flex flex-col items-center text-center border border-white/5 hover:border-primary/40 group overflow-hidden"
                             >
                                 <AnimatePresence>
                                     {isHiring && (
@@ -136,15 +136,15 @@ const CareerPage = () => {
                                     )}
                                 </AnimatePresence>
 
-                                <div className="mb-6 p-4 bg-indigo-50 rounded-full">
+                                <div className="mb-8 p-6 bg-primary/5 rounded-3xl group-hover:bg-primary/10 transition-all duration-300 shadow-[inset_0_0_20px_rgba(255,208,0,0.05)]">
                                     {career.icon}
                                 </div>
-                                <h2 className="text-2xl font-bold text-primary mb-4">{career.title}</h2>
-                                <p className="text-gray-600 mb-8">{career.description}</p>
+                                <h2 className="text-3xl font-bold text-white mb-4 group-hover:text-primary transition-colors">{career.title}</h2>
+                                <p className="text-accent mb-10 text-lg font-light leading-relaxed">{career.description}</p>
                                 {(() => {
                                     const buttonClass = isHiring
-                                        ? "mt-auto font-semibold py-2 px-6 rounded-full transition-colors duration-300 bg-primary hover:bg-secondary text-white cursor-pointer shadow-lg hover:shadow-xl"
-                                        : "mt-auto font-semibold py-2 px-6 rounded-full transition-colors duration-300 bg-gray-300 text-gray-500 cursor-not-allowed";
+                                        ? "mt-auto font-black py-4 px-10 rounded-2xl transition-all duration-300 bg-primary hover:bg-orange-glow text-dark cursor-pointer shadow-[0_0_20px_rgba(255,208,0,0.3)] hover:shadow-[0_0_30px_rgba(255,138,51,0.5)] uppercase tracking-widest text-sm"
+                                        : "mt-auto font-semibold py-4 px-10 rounded-2xl transition-colors duration-300 bg-white/5 text-white/30 cursor-not-allowed uppercase tracking-widest text-sm";
 
                                     return (
                                         <motion.button

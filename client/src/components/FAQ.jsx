@@ -28,32 +28,32 @@ const FAQ = () => {
     };
 
     return (
-        <section id="faq" className="py-20 bg-white">
+        <section id="faq" className="py-28 bg-charcoal relative overflow-hidden">
             <div className="container mx-auto px-4 max-w-3xl">
-                <div className="text-center mb-16">
-                    <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Frequently Asked Questions</h2>
-                    <div className="w-20 h-1 bg-secondary mx-auto"></div>
+                <div className="text-center mb-20">
+                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Helpful <span className="text-primary italic">Answers</span></h2>
+                    <div className="w-20 h-1 bg-gradient-to-r from-primary to-secondary mx-auto rounded-full"></div>
                 </div>
 
                 <div className="space-y-4">
                     {faqs.map((faq, index) => (
-                        <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+                        <div key={index} className="border border-white/5 rounded-2xl overflow-hidden bg-dark shadow-2xl group transition-all duration-300">
                             <button
-                                className="w-full flex justify-between items-center p-4 bg-slate-50 hover:bg-slate-100 transition-colors text-left focus:outline-none"
+                                className="w-full flex justify-between items-center p-6 bg-dark hover:bg-dark/80 transition-all duration-300 text-left focus:outline-none group"
                                 onClick={() => toggleFAQ(index)}
                             >
-                                <span className="font-semibold text-primary">{faq.question}</span>
+                                <span className={`font-bold text-lg tracking-wide transition-colors duration-300 ${openIndex === index ? 'text-primary' : 'text-white'}`}>{faq.question}</span>
                                 {openIndex === index ? (
-                                    <Minus className="h-5 w-5 text-secondary" />
+                                    <Minus className="h-6 w-6 text-primary" />
                                 ) : (
-                                    <Plus className="h-5 w-5 text-secondary" />
+                                    <Plus className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
                                 )}
                             </button>
                             <div
                                 className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
                                     }`}
                             >
-                                <div className="p-4 bg-white text-gray-600 border-t border-gray-100">
+                                <div className="p-6 bg-dark text-accent border-t border-white/5 font-light leading-relaxed text-lg">
                                     {faq.answer}
                                 </div>
                             </div>

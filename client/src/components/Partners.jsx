@@ -19,9 +19,9 @@ const Partners = () => {
     const marqueeItems = [...partners, ...partners, ...partners];
 
     return (
-        <section className="py-10 bg-white border-b border-gray-100 overflow-hidden">
+        <section className="py-16 bg-dark border-b border-white/5 overflow-hidden">
             <div className="container mx-auto px-4 mb-8 text-center">
-                <p className="text-lg md:text-xl font-medium text-gray-500 tracking-wide">
+                <p className="text-lg md:text-xl font-medium text-accent tracking-wide uppercase">
                     Proudly Collaborating with Industry Leaders
                 </p>
             </div>
@@ -50,10 +50,10 @@ const Partners = () => {
                                 <img
                                     src={partner.logo}
                                     alt={partner.name}
-                                    className="h-12 md:h-16 w-auto object-contain filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                                    className="h-10 md:h-14 w-auto object-contain filter grayscale invert opacity-50 group-hover:opacity-100 transition-all duration-300"
                                 />
                             ) : (
-                                <span className="text-xl md:text-2xl font-bold text-gray-600 font-serif tracking-tight group-hover:text-primary transition-colors">
+                                <span className="text-xl md:text-2xl font-bold text-accent font-serif tracking-tight group-hover:text-primary transition-colors">
                                     {partner.name}
                                 </span>
                             )}

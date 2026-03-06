@@ -7,11 +7,14 @@ export default {
     theme: {
         extend: {
             colors: {
-                primary: '#115e59', // Teal 800 - Lighter than before
-                secondary: '#fcd34d', // Amber 300 - Lighter Gold
-                accent: '#f8fafc', // Slate 50 - Very light background
-                dark: '#1e293b', // Slate 800 - Lighter dark
-                surface: '#ffffff', // Pure white for cards
+                primary: '#FFD000', // Vibrant Yellow
+                secondary: '#FF6A00', // Bright Orange
+                dark: '#0A0A0A', // Deep Black
+                charcoal: '#121212', // Dark Charcoal
+                accent: '#BFBFBF', // Secondary Text
+                surface: '#1E1E1E', // Slightly lighter charcoal for cards
+                'yellow-glow': '#FFE347',
+                'orange-glow': '#FF8A33',
             },
             fontFamily: {
                 sans: ['Inter', 'sans-serif'],

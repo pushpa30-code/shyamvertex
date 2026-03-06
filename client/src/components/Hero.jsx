@@ -1,89 +1,86 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 
-import handshakeImg from '../images/handshake.jpeg';
+import handshakeVideo from '../images/Antigravity_Hero_Handshake_Animation.mp4';
 
 const Hero = () => {
     return (
-        <section className="relative h-screen flex items-center justify-center bg-[#f0fdfa] overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute inset-0">
-                <motion.div
-                    className="w-full h-full"
-                    animate={{
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 1, -1, 0]
-                    }}
-                    transition={{
-                        duration: 20,
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        ease: "linear"
-                    }}
+        <section className="relative min-h-screen flex items-center justify-center bg-dark overflow-hidden">
+            {/* Background Video */}
+            <div className="absolute inset-0 z-0 pointer-events-none">
+                <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover opacity-80"
                 >
-                    <img
-                        src={handshakeImg}
-                        alt="Background"
-                        className="w-full h-full object-cover"
-                    />
-                </motion.div>
-                <div className="absolute inset-0 bg-black/50"></div>
+                    <source src={handshakeVideo} type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/30 to-transparent"></div>
             </div>
 
-            <div className="container mx-auto px-4 z-10 text-center">
+            <div className="container mx-auto px-4 z-10 text-center relative pt-20">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, ease: "easeOut" }}
+                    className="max-w-5xl mx-auto space-y-10"
                 >
-                    <h1 className="text-4xl md:text-7xl font-bold mb-6 tracking-tight text-white">
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.3, duration: 0.8 }}
+                        className="inline-block px-6 py-2.5 rounded-full border border-primary/30 bg-primary/10 text-primary text-sm md:text-base font-medium backdrop-blur-md shadow-[0_0_20px_rgba(255,208,0,0.2)]"
+                    >
+                        <span className="flex items-center gap-2">
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                            </span>
+                            Future-Ready Digital Infrastructure
+                        </span>
+                    </motion.div>
+
+                    <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-tight drop-shadow-md">
                         <motion.span
-                            className="text-secondary drop-shadow-md inline-block"
-                            animate={{ scale: [1, 1.05, 1] }}
-                            transition={{ duration: 3, repeat: Infinity }}
+                            animate={{ scale: [1, 1.02, 1] }}
+                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+                            className="inline-block pb-2 text-primary"
                         >
                             ShyamVertex
                         </motion.span>
                     </h1>
-                    <motion.p
-                        initial={{ opacity: 0, x: -50 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5, duration: 0.8 }}
-                        className="text-xl md:text-4xl font-light mb-8 text-gray-200"
-                    >
-                        Go Vertex, <span className="text-secondary font-medium">Go Beyond</span>
-                    </motion.p>
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1, duration: 1 }}
-                        className="text-base md:text-xl text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed"
-                    >
-                        Empowering businesses with cutting-edge IT solutions, from UI/UX design to cloud infrastructure.
-                    </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 1.2, duration: 0.8 }}
-                        className="flex flex-col sm:flex-row justify-center gap-4 md:gap-6"
-                    >
+                    <p className="text-2xl md:text-4xl lg:text-5xl font-light text-white max-w-3xl mx-auto leading-relaxed drop-shadow-lg">
+                        Go Vertex, <span className="text-secondary font-semibold">Go Beyond</span>
+                    </p>
+
+                    <p className="text-lg md:text-xl font-light text-slate-200 max-w-2xl mx-auto leading-relaxed drop-shadow-lg mt-6">
+                        Empowering businesses with cutting-edge IT solutions, from UI/UX design to cloud infrastructure.
+                    </p>
+
+                    <div className="flex flex-col sm:flex-row justify-center gap-6 pt-8">
                         <motion.a
-                            whileHover={{ scale: 1.05, backgroundColor: "#fcd34d", color: "#115e59" }}
+                            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(255,208,0,0.6)" }}
+                            whileTap={{ scale: 0.95 }}
                             href="#contact"
-                            className="px-6 py-3 md:px-8 md:py-4 bg-secondary text-primary font-bold rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-lg shadow-secondary/20 text-sm md:text-base"
+                            className="px-8 py-4 bg-primary text-dark font-bold rounded-full transition-all duration-300 flex items-center justify-center gap-2 text-lg group"
                         >
-                            Get Started <ArrowRight className="h-4 w-4 md:h-5 md:w-5" />
+                            Get Started
+                            <ArrowRight className="h-6 w-6 transform group-hover:translate-x-1 transition-transform" />
                         </motion.a>
+
                         <motion.a
-                            whileHover={{ scale: 1.05, backgroundColor: "rgba(252, 211, 77, 0.1)" }}
+                            whileHover={{ scale: 1.05, backgroundColor: "rgba(255, 208, 0, 0.15)" }}
+                            whileTap={{ scale: 0.95 }}
                             href="#services"
-                            className="px-6 py-3 md:px-8 md:py-4 border border-secondary/50 text-secondary font-semibold rounded-full hover:bg-secondary/10 transition-all duration-300 backdrop-blur-sm text-sm md:text-base"
+                            className="px-8 py-4 border-2 border-slate-400 hover:border-primary text-white font-semibold rounded-full transition-all duration-300 backdrop-blur-md text-lg flex items-center justify-center gap-2"
                         >
                             Explore Services
                         </motion.a>
-                    </motion.div>
+                    </div>
                 </motion.div>
             </div>
         </section>

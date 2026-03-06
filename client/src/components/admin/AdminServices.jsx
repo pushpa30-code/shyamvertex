@@ -55,45 +55,48 @@ const AdminServices = () => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-800">Manage Services</h2>
+        <div className="bg-charcoal p-8 rounded-[2rem] border border-white/5">
+            <div className="flex justify-between items-center mb-10">
+                <h2 className="text-2xl font-black text-white border-l-4 border-primary pl-4 uppercase tracking-tight">Manage Services</h2>
                 <button
                     onClick={() => setShowForm(!showForm)}
-                    className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg hover:bg-secondary transition-colors"
+                    className="flex items-center gap-3 bg-primary text-dark px-6 py-3 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-yellow-glow shadow-xl shadow-primary/20 transition-all"
                 >
-                    <Plus size={18} /> Add Service
+                    <Plus size={20} /> Add Service
                 </button>
             </div>
 
             {showForm && (
-                <form onSubmit={handleSubmit} className="mb-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
-                    <div className="grid gap-4">
-                        <input
-                            type="text"
-                            placeholder="Service Title"
-                            className="w-full p-2 border rounded"
-                            value={newService.title}
-                            onChange={e => setNewService({ ...newService, title: e.target.value })}
-                            required
-                        />
+                <form onSubmit={handleSubmit} className="mb-12 p-8 bg-dark rounded-[2rem] border border-white/10 shadow-2xl relative group overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-[40px]"></div>
+                    <div className="grid gap-6 relative z-10">
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <input
+                                type="text"
+                                placeholder="Service Title"
+                                className="w-full px-6 py-4 bg-charcoal border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                                value={newService.title}
+                                onChange={e => setNewService({ ...newService, title: e.target.value })}
+                                required
+                            />
+                            <select
+                                className="w-full px-6 py-4 bg-charcoal border border-white/10 rounded-2xl text-white focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold appearance-none cursor-pointer"
+                                value={newService.icon}
+                                onChange={e => setNewService({ ...newService, icon: e.target.value })}
+                            >
+                                {ICONS.map(icon => <option key={icon} value={icon} className="bg-dark text-white">{icon}</option>)}
+                            </select>
+                        </div>
                         <textarea
-                            placeholder="Description"
-                            className="w-full p-2 border rounded"
+                            placeholder="Service Description"
+                            className="w-full px-6 py-4 bg-charcoal border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-medium h-32 resize-none"
                             value={newService.description}
                             onChange={e => setNewService({ ...newService, description: e.target.value })}
                             required
                         />
-                        <select
-                            className="w-full p-2 border rounded"
-                            value={newService.icon}
-                            onChange={e => setNewService({ ...newService, icon: e.target.value })}
-                        >
-                            {ICONS.map(icon => <option key={icon} value={icon}>{icon}</option>)}
-                        </select>
-                        <div className="flex justify-end gap-2">
-                            <button type="button" onClick={() => setShowForm(false)} className="px-4 py-2 text-gray-600 hover:text-gray-800">Cancel</button>
-                            <button type="submit" className="px-4 py-2 bg-primary text-white rounded hover:bg-secondary">Save Service</button>
+                        <div className="flex justify-end gap-4 pt-2">
+                            <button type="button" onClick={() => setShowForm(false)} className="px-6 py-3 text-accent hover:text-white font-bold uppercase tracking-widest text-xs transition-colors">Cancel</button>
+                            <button type="submit" className="px-8 py-3 bg-primary text-dark rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-yellow-glow shadow-xl shadow-primary/20 transition-all">Save Service</button>
                         </div>
                     </div>
                 </form>
@@ -101,17 +104,29 @@ const AdminServices = () => {
 
             <div className="space-y-4">
                 {services.map(service => (
-                    <div key={service.id} className="flex justify-between items-center p-4 border rounded-lg hover:shadow-md transition-shadow">
-                        <div>
-                            <h3 className="font-bold text-lg">{service.title}</h3>
-                            <p className="text-gray-600 text-sm">{service.description}</p>
-                            <span className="text-xs bg-gray-100 px-2 py-1 rounded mt-2 inline-block">Icon: {service.icon}</span>
+                    <div key={service.id} className="flex justify-between items-center p-6 bg-dark border border-white/5 rounded-[2rem] hover:border-primary/30 transition-all duration-300 group shadow-2xl">
+                        <div className="flex items-center gap-6">
+                            <div className="w-16 h-16 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-dark transition-all duration-500 shadow-[inset_0_0_20px_rgba(255,208,0,0.05)]">
+                                {service.icon === 'Code' && <Code size={28} />}
+                                {service.icon === 'Smartphone' && <Smartphone size={28} />}
+                                {service.icon === 'Layout' && <Layout size={28} />}
+                                {service.icon === 'Cloud' && <Cloud size={28} />}
+                                {service.icon === 'Database' && <Database size={28} />}
+                                {service.icon === 'Monitor' && <Monitor size={28} />}
+                                {service.icon === 'Server' && <Server size={28} />}
+                                {service.icon === 'Globe' && <Globe size={28} />}
+                                {service.icon === 'Cpu' && <Cpu size={28} />}
+                            </div>
+                            <div>
+                                <h3 className="font-black text-xl text-white mb-1">{service.title}</h3>
+                                <p className="text-accent text-sm font-light max-w-xl">{service.description}</p>
+                            </div>
                         </div>
                         <button
                             onClick={() => handleDelete(service.id)}
-                            className="text-red-500 hover:text-red-700 p-2"
+                            className="text-white/20 hover:text-red-500 p-4 bg-white/5 rounded-2xl transition-all hover:bg-red-500/10"
                         >
-                            <Trash2 size={20} />
+                            <Trash2 size={24} />
                         </button>
                     </div>
                 ))}

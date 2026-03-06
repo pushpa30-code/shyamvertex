@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Save, Loader } from 'lucide-react';
+import { motion } from 'framer-motion';
 import API_URL from '../../config';
 
 const AdminContact = () => {
@@ -61,83 +62,50 @@ const AdminContact = () => {
     if (loading) return <div>Loading settings...</div>;
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">Contact Information Settings</h2>
+        <div className="bg-charcoal p-8 rounded-[2rem] border border-white/5">
+            <h2 className="text-2xl font-black text-white mb-10 border-l-4 border-primary pl-4 uppercase tracking-tight">Contact Settings</h2>
 
-            <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Primary Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={settings.email}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary outline-none"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-                        <input
-                            type="text"
-                            name="address"
-                            value={settings.address}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary outline-none"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number 1</label>
-                        <input
-                            type="text"
-                            name="phone_1"
-                            value={settings.phone_1}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary outline-none"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number 2</label>
-                        <input
-                            type="text"
-                            name="phone_2"
-                            value={settings.phone_2}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary outline-none"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Instagram URL</label>
-                        <input
-                            type="url"
-                            name="instagram"
-                            value={settings.instagram}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary outline-none"
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">LinkedIn URL</label>
-                        <input
-                            type="url"
-                            name="linkedin"
-                            value={settings.linkedin}
-                            onChange={handleChange}
-                            className="w-full p-2 border rounded focus:ring-2 focus:ring-primary outline-none"
-                        />
-                    </div>
+            <form onSubmit={handleSubmit} className="space-y-10 max-w-4xl">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {[
+                        { label: 'Primary Support Email', name: 'email', type: 'email', value: settings.email },
+                        { label: 'Physical Headquarters', name: 'address', type: 'text', value: settings.address },
+                        { label: 'Primary Contact Line', name: 'phone_1', type: 'text', value: settings.phone_1 },
+                        { label: 'Secondary Contact Line', name: 'phone_2', type: 'text', value: settings.phone_2 },
+                        { label: 'Instagram Profile URL', name: 'instagram', type: 'url', value: settings.instagram },
+                        { label: 'LinkedIn Business Page', name: 'linkedin', type: 'url', value: settings.linkedin },
+                    ].map((field, idx) => (
+                        <div key={idx} className="space-y-3">
+                            <label className="text-xs font-bold text-white/40 uppercase tracking-[0.2em] ml-1">{field.label}</label>
+                            <input
+                                type={field.type}
+                                name={field.name}
+                                value={field.value}
+                                onChange={handleChange}
+                                className="w-full px-6 py-4 bg-dark border border-white/10 rounded-2xl text-white placeholder-white/20 focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all font-bold"
+                            />
+                        </div>
+                    ))}
                 </div>
 
-                <div className="flex items-center gap-4 pt-4">
+                <div className="flex items-center gap-6 pt-6 border-t border-white/5">
                     <button
                         type="submit"
                         disabled={saving}
-                        className="flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-lg hover:bg-secondary transition-colors disabled:opacity-50"
+                        className="flex items-center gap-3 bg-primary text-dark px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm hover:bg-yellow-glow shadow-2xl shadow-primary/20 transition-all disabled:opacity-50"
                     >
-                        {saving ? <Loader className="animate-spin" size={18} /> : <Save size={18} />}
+                        {saving ? <Loader className="animate-spin" size={20} /> : <Save size={20} />}
                         Save Changes
                     </button>
-                    {message && <span className={`text-sm ${message.includes('Error') ? 'text-red-600' : 'text-green-600'}`}>{message}</span>}
+                    {message && (
+                        <motion.span
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className={`text-xs font-bold uppercase tracking-widest ${message.includes('Error') ? 'text-red-400' : 'text-primary'}`}
+                        >
+                            {message}
+                        </motion.span>
+                    )}
                 </div>
             </form>
         </div>
