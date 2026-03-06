@@ -26,7 +26,7 @@ const FadeInSection = ({ children }) => {
 
 const HomePage = () => {
     return (
-        <div className="w-full relative bg-accent z-10">
+        <div className="w-full relative bg-dark z-10">
             {/* Placeholder for sections until they are created */}
             <Hero />
             <FadeInSection><Partners /></FadeInSection>
