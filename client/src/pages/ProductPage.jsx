@@ -90,7 +90,7 @@ const ProductPage = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.1 }}
-                        className="text-6xl md:text-8xl lg:text-9xl font-black mb-8 tracking-tighter text-white leading-[0.9] uppercase"
+                        className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl font-black mb-8 tracking-tighter text-white leading-[0.9] uppercase"
                     >
                         Mastering <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-blue-500">Crewmitra</span>
@@ -100,7 +100,7 @@ const ProductPage = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1, delay: 0.4 }}
-                        className="text-lg md:text-2xl font-medium text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed tracking-tight"
+                        className="text-base sm:text-xl md:text-2xl font-medium text-zinc-400 max-w-3xl mx-auto mb-12 leading-relaxed tracking-tight"
                     >
                         The intelligent <span className="text-white">CRM & HRM</span> production platform for modern contractors, sites, and enterprise execution.
                     </motion.p>
@@ -178,8 +178,8 @@ const ProductPage = () => {
                         className="bg-[#09090b] p-20 rounded-[4rem] shadow-2xl relative overflow-hidden border border-white/[0.05]"
                     >
                         <div className="absolute -top-32 -right-32 w-80 h-80 bg-blue-500/10 rounded-full blur-[100px]"></div>
-                        <h2 className="text-5xl md:text-7xl font-black mb-8 text-white tracking-tighter uppercase leading-[0.9]">Ready for <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic font-black">Clarity?</span></h2>
-                        <p className="text-zinc-500 mb-14 text-xl md:text-2xl font-medium max-w-2xl mx-auto tracking-tight">Join modern contractors who manage their workforce with precision.</p>
+                        <h2 className="text-4xl sm:text-6xl md:text-7xl font-black mb-8 text-white tracking-tighter uppercase leading-[0.9]">Ready for <br /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400 italic font-black">Clarity?</span></h2>
+                        <p className="text-zinc-500 mb-14 text-lg sm:text-xl md:text-2xl font-medium max-w-2xl mx-auto tracking-tight">Join modern contractors who manage their workforce with precision.</p>
 
                         <div className="flex flex-col sm:flex-row justify-center gap-6">
                             <button

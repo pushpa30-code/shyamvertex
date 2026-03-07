@@ -73,7 +73,7 @@ const AboutUsPage = () => {
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-5xl md:text-7xl font-bold mb-8 tracking-tight text-white flex flex-wrap justify-center gap-4"
+                        className="text-3xl sm:text-5xl md:text-7xl font-bold mb-8 tracking-tight text-white flex flex-wrap justify-center gap-4"
                     >
                         Shyam <span className="text-primary">Vertex</span>
                     </motion.h1>
@@ -81,7 +81,7 @@ const AboutUsPage = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.3 }}
-                        className="text-2xl md:text-3xl text-zinc-500 max-w-4xl mx-auto font-light leading-relaxed tracking-tight"
+                        className="text-lg sm:text-xl md:text-3xl text-zinc-500 max-w-4xl mx-auto font-light leading-relaxed tracking-tight"
                     >
                         We don't just build solutions; we <span className="text-white font-bold italic underline decoration-primary/50 underline-offset-8">define the future</span> of digital infrastructure.
                     </motion.p>
@@ -138,9 +138,9 @@ const AboutUsPage = () => {
                                         <div className="inline-block px-4 py-1 rounded-full bg-primary/10 border border-primary/20 mb-6">
                                             <p className="text-primary font-black text-[10px] uppercase tracking-[0.4em]">{founder.role}</p>
                                         </div>
-                                        <h3 className="text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight uppercase italic">{founder.name}</h3>
+                                        <h3 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight uppercase italic">{founder.name}</h3>
                                         <div className="w-20 h-1 bg-gradient-to-r from-primary to-transparent mx-auto mb-8"></div>
-                                        <p className="text-zinc-400 font-medium text-lg leading-relaxed max-w-md mx-auto">{founder.bio}</p>
+                                        <p className="text-zinc-400 font-medium text-base sm:text-lg leading-relaxed max-w-md mx-auto">{founder.bio}</p>
                                     </div>
                                 </div>
                                 <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-all" />

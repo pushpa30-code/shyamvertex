@@ -28,7 +28,7 @@ const Testimonials = () => {
                     <div className="w-20 h-1 bg-primary mx-auto rounded-full"></div>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
                         <div key={index} className="bg-[#09090b] p-10 rounded-[2rem] relative border border-white/5 shadow-2xl hover:border-primary/20 transition-all duration-300 overflow-hidden group">
                             <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-all duration-300"></div>

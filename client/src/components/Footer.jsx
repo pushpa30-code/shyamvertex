@@ -22,7 +22,7 @@ const Footer = () => {
 
         const resize = () => {
             canvas.width = window.innerWidth;
-            canvas.height = 500;
+            canvas.height = window.innerWidth < 768 ? 350 : 500;
         };
 
         const draw = (time) => {
@@ -100,6 +100,208 @@ const Footer = () => {
                 ctx.stroke();
             }
 
+            // 4. Premium Orange/Yellow Ray Wave Effect
+            const rayCount = 8;
+            for (let i = 0; i < rayCount; i++) {
+                const direction = i % 2 === 0 ? 1 : -1;
+                const speed = (0.04 + (i * 0.015)) * direction;
+                const angle = (time / 5000 + i * Math.PI / 3) % (Math.PI * 2);
+                const wave = Math.sin(time / 800 + i) * 60;
+
+                // Position rays to flow diagonally/horizontally in both directions
+                let x = (time * speed + i * (canvas.width / 4)) % (canvas.width + 1200);
+                if (x < 0) x += (canvas.width + 1200);
+                x -= 600;
+
+                const y = (centerY - 150) + (i * 40) + wave;
+
+                const rayLength = 350 + Math.sin(time / 1500 + i) * 120;
+                const rayWidth = 2;
+
+                const rayGrad = ctx.createLinearGradient(x, y, x + rayLength * direction, y + (Math.sin(angle) * 30));
+                const rayColor = i % 2 === 0 ? '255, 140, 0' : '255, 215, 0'; // Orange and Yellow
+
+                rayGrad.addColorStop(0, `rgba(${rayColor}, 0)`);
+                rayGrad.addColorStop(0.5, `rgba(${rayColor}, 0.35)`);
+                rayGrad.addColorStop(1, `rgba(${rayColor}, 0)`);
+
+                ctx.strokeStyle = rayGrad;
+                ctx.lineWidth = rayWidth;
+                ctx.lineCap = 'round';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = `rgba(${rayColor}, 0.5)`;
+
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + rayLength * direction, y + (Math.sin(angle) * 30));
+                ctx.stroke();
+
+                // Reset shadow for next draws
+                ctx.shadowBlur = 0;
+            }
+
+            // 5. Alternating Side Robot Unit (Orange/Yellow)
+            const cycleTime = 12000; // 12 seconds per full cycle (Left -> Hidden -> Right -> Hidden)
+            const phase = time % cycleTime;
+
+            let robotX = -200; // Default off-screen
+            let side = 'left';
+            let isVisible = false;
+            let slideProgress = 0; // 0 to 1
+
+            if (phase < 5000) { // Left Side Phase (5s)
+                isVisible = true;
+                side = 'left';
+                if (phase < 1000) slideProgress = phase / 1000; // Slide in (1s)
+                else if (phase > 4000) slideProgress = (5000 - phase) / 1000; // Slide out (1s)
+                else slideProgress = 1; // Stay
+                robotX = -100 + (slideProgress * 250); // From -100 to 150
+            } else if (phase >= 6000 && phase < 11000) { // Right Side Phase (5s)
+                isVisible = true;
+                side = 'right';
+                const rightPhase = phase - 6000;
+                if (rightPhase < 1000) slideProgress = rightPhase / 1000;
+                else if (rightPhase > 4000) slideProgress = (5000 - rightPhase) / 1000;
+                else slideProgress = 1;
+                robotX = canvas.width + 100 - (slideProgress * 250); // From width+100 to width-150
+            }
+
+            if (isVisible) {
+                const robotScale = canvas.width < 768 ? 0.8 : 1;
+                const robotBaseY = canvas.height - (canvas.width < 768 ? 70 : 100);
+                const floatY = Math.sin(time / 400) * 8;
+
+                ctx.save();
+                ctx.translate(robotX, robotBaseY + floatY);
+                ctx.scale(robotScale * (side === 'right' ? -1 : 1), robotScale);
+
+                // Colors: Orange & Yellow
+                const bodyColor = '255, 140, 0'; // Orange
+                const accentColor = '255, 215, 0'; // Yellow
+
+                // Shading Gradients
+                const bodyGrad = ctx.createLinearGradient(-30, -40, 30, 10);
+                bodyGrad.addColorStop(0, `rgba(${bodyColor}, 0.3)`);
+                bodyGrad.addColorStop(0.5, `rgba(${bodyColor}, 0.2)`);
+                bodyGrad.addColorStop(1, `rgba(${bodyColor}, 0.1)`);
+
+                const headGrad = ctx.createRadialGradient(0, -60, 0, 0, -60, 40);
+                headGrad.addColorStop(0, `rgba(${accentColor}, 0.3)`);
+                headGrad.addColorStop(1, `rgba(${accentColor}, 0.1)`);
+
+                ctx.strokeStyle = `rgba(${accentColor}, 0.8)`;
+                ctx.lineWidth = 1.5;
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = `rgba(${accentColor}, 0.5)`;
+
+                // Robot Body
+                ctx.fillStyle = bodyGrad;
+                ctx.beginPath();
+                ctx.roundRect(-30, -40, 60, 50, [12, 12, 8, 8]);
+                ctx.fill();
+                ctx.stroke();
+
+                // Shoulder Joints
+                ctx.fillStyle = `rgba(${accentColor}, 0.4)`;
+                ctx.beginPath();
+                ctx.arc(-30, -30, 6, 0, Math.PI * 2);
+                ctx.arc(30, -30, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Head
+                ctx.fillStyle = headGrad;
+                ctx.beginPath();
+                ctx.roundRect(-28, -78, 56, 34, 10);
+                ctx.fill();
+                ctx.stroke();
+
+                // Antenna
+                ctx.strokeStyle = `rgba(${accentColor}, 0.6)`;
+                ctx.beginPath();
+                ctx.moveTo(0, -78);
+                ctx.lineTo(0, -95);
+                ctx.stroke();
+
+                const antennaPulse = (Math.sin(time / 200) + 1) / 2;
+                ctx.fillStyle = `rgba(${accentColor}, ${0.5 + antennaPulse * 0.5})`;
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = `rgba(${accentColor}, 1)`;
+                ctx.beginPath();
+                ctx.arc(0, -95, 4.5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // Digital Eyes
+                const isBlinking = (Math.floor(time / 200) % 25) === 0;
+                if (!isBlinking) {
+                    ctx.fillStyle = '#fff9e6'; // Bright yellowish white
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = `rgba(${accentColor}, 1)`;
+                    ctx.beginPath();
+                    ctx.arc(-12, -65, 3.5, 0, Math.PI * 2);
+                    ctx.arc(12, -65, 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+
+                // Digital Smile
+                const wavePhase = Math.sin(time / 300);
+                const isSmiling = slideProgress === 1 && wavePhase > 0;
+                ctx.strokeStyle = `rgba(${accentColor}, 1)`;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                if (isSmiling) {
+                    ctx.arc(0, -55, 8, 0.2 * Math.PI, 0.8 * Math.PI, false);
+                } else {
+                    ctx.moveTo(-6, -50);
+                    ctx.lineTo(6, -50);
+                }
+                ctx.stroke();
+
+                // Waving Arm
+                const waveAngle = (slideProgress === 1) ? (wavePhase * 0.7 - 0.5) : -0.2;
+                ctx.save();
+                ctx.translate(30, -30);
+                ctx.rotate(waveAngle);
+
+                ctx.fillStyle = bodyGrad;
+                ctx.beginPath();
+                ctx.roundRect(0, -6, 25, 12, 6);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(25, 0, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.save();
+                ctx.translate(25, 0);
+                ctx.rotate(0.2);
+                ctx.beginPath();
+                ctx.roundRect(0, -5, 20, 10, 5);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = `rgba(${accentColor}, 0.3)`;
+                ctx.beginPath();
+                ctx.arc(25, 0, 9, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                ctx.restore();
+                ctx.restore();
+
+                // Left Arm
+                ctx.beginPath();
+                ctx.roundRect(-45, -30, 15, 40, 7);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.restore();
+                ctx.shadowBlur = 0;
+            }
+
             animationFrameId = requestAnimationFrame(draw);
         };
 
@@ -150,7 +352,7 @@ const Footer = () => {
     };
 
     return (
-        <footer className="relative bg-black text-white pt-24 pb-12 overflow-hidden border-t border-white/5 min-h-[500px]">
+        <footer className="relative bg-black text-white pt-16 md:pt-24 pb-12 overflow-hidden border-t border-white/5 min-h-[400px] md:min-h-[500px]">
             {/* Robot/Tech Animation Background */}
             <canvas
                 ref={canvasRef}
@@ -163,10 +365,10 @@ const Footer = () => {
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
-                    className="grid grid-cols-1 md:grid-cols-4 gap-12"
+                    className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
                 >
                     {/* Company Info */}
-                    <motion.div variants={itemVariants} className="col-span-1 md:col-span-1">
+                    <motion.div variants={itemVariants} className="col-span-2 lg:col-span-1">
                         <h3 className="text-2xl font-bold text-white tracking-tight mb-4">
                             Shyam<span className="text-primary">Vertex</span>
                         </h3>

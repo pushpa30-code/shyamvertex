@@ -39,21 +39,21 @@ const FAQ = () => {
                     {faqs.map((faq, index) => (
                         <div key={index} className="border border-white/5 rounded-2xl overflow-hidden bg-dark shadow-2xl group transition-all duration-300">
                             <button
-                                className="w-full flex justify-between items-center p-6 bg-dark hover:bg-dark/80 transition-all duration-300 text-left focus:outline-none group"
+                                className="w-full flex justify-between items-center p-4 md:p-6 bg-dark hover:bg-dark/80 transition-all duration-300 text-left focus:outline-none group"
                                 onClick={() => toggleFAQ(index)}
                             >
-                                <span className={`font-bold text-lg tracking-wide transition-colors duration-300 ${openIndex === index ? 'text-primary' : 'text-white'}`}>{faq.question}</span>
+                                <span className={`font-bold text-base md:text-lg tracking-wide transition-colors duration-300 ${openIndex === index ? 'text-primary' : 'text-white'}`}>{faq.question}</span>
                                 {openIndex === index ? (
-                                    <Minus className="h-6 w-6 text-primary" />
+                                    <Minus className="h-5 w-5 md:h-6 md:w-6 text-primary" />
                                 ) : (
-                                    <Plus className="h-6 w-6 text-primary group-hover:scale-110 transition-transform" />
+                                    <Plus className="h-5 w-5 md:h-6 md:w-6 text-primary group-hover:scale-110 transition-transform" />
                                 )}
                             </button>
                             <div
-                                className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
+                                className={`transition-all duration-300 ease-in-out overflow-hidden ${openIndex === index ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
                                     }`}
                             >
-                                <div className="p-6 bg-dark text-accent border-t border-white/5 font-light leading-relaxed text-lg">
+                                <div className="p-4 md:p-6 bg-dark text-accent border-t border-white/5 font-light leading-relaxed text-sm md:text-lg">
                                     {faq.answer}
                                 </div>
                             </div>

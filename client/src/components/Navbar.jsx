@@ -113,8 +113,7 @@ const Navbar = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        style={{ backgroundColor: '#000000', zIndex: 99999 }}
-                        className="md:hidden fixed inset-0 flex flex-col h-[100dvh] w-screen"
+                        className="md:hidden fixed inset-0 flex flex-col h-[100dvh] w-screen bg-black z-[100]"
                     >
                         {/* Mobile Header */}
                         <div className="flex items-center justify-between h-20 px-6 border-b border-white/10 shrink-0">

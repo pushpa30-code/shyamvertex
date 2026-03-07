@@ -40,7 +40,7 @@ const Blog = () => {
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                     {blogs.map((post) => (
                         <div key={post.id} className="bg-[#09090b] rounded-[2rem] overflow-hidden shadow-2xl border border-white/5 hover:border-primary/30 transition-all duration-300 group">
                             <div className="relative h-56 overflow-hidden">
