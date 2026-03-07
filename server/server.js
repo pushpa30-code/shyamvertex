@@ -30,9 +30,22 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: '*',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 app.use('/uploads', express.static('uploads')); // Serve uploaded files
+
+// Global Error Handlers to prevent server crash in production
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION! Shutting down...', err.name, err.message);
+});
+
+process.on('unhandledRejection', (err) => {
+    console.error('UNHANDLED REJECTION! Shutting down...', err.name, err.message);
+});
 
 // Track DB connection status
 let dbConnected = false;
@@ -115,29 +128,45 @@ const initializeDatabase = () => {
         )`
     ];
 
-    tables.forEach(query => {
+    tables.forEach((query, index) => {
         db.query(query, (err) => {
-            if (err) console.error('Error creating table:', err.message);
+            if (err) {
+                if (err.code !== 'ER_TABLE_EXISTS_ERROR' && err.code !== 'ER_DUP_ENTRY') {
+                    console.error(`DB Initialization - Table Query failed:`, err.message);
+                }
+            }
         });
     });
 
-    // Seed initial data if tables are empty
-    db.query('SELECT COUNT(*) as count FROM job_settings', (err, results) => {
-        if (!err && results[0].count === 0) {
-            const seedJobs = [
-                ['fulltime', 'Full-time', 1],
-                ['internship', 'Internship', 1],
-                ['freelance', 'Freelance', 1]
-            ];
-            db.query('INSERT INTO job_settings (role_id, label, is_hiring) VALUES ?', [seedJobs]);
+    // Seed initial data sequentially
+    setTimeout(() => {
+        if (!dbConnected) {
+            console.log('Database not connected. Skipping seeding.');
+            return;
         }
-    });
+        db.query('SELECT COUNT(*) as count FROM job_settings', (err, results) => {
+            if (!err && results && results[0] && results[0].count === 0) {
+                const seedJobs = [
+                    ['fulltime', 'Full-time', 1],
+                    ['internship', 'Internship', 1],
+                    ['freelance', 'Freelance', 1]
+                ];
+                db.query('INSERT INTO job_settings (role_id, label, is_hiring) VALUES ?', [seedJobs], (err) => {
+                    if (err) console.error('Seed Jobs Error:', err.message);
+                    else console.log('Job settings seeded.');
+                });
+            }
+        });
 
-    db.query('SELECT COUNT(*) as count FROM contact_info', (err, results) => {
-        if (!err && results[0].count === 0) {
-            db.query('INSERT INTO contact_info (id, email, phone_1, address) VALUES (1, "shyamvertexpvt@gmail.com", "+91 87993-03431", "Vadodara, Gujarat")');
-        }
-    });
+        db.query('SELECT COUNT(*) as count FROM contact_info', (err, results) => {
+            if (!err && results && results[0] && results[0].count === 0) {
+                db.query('INSERT INTO contact_info (id, email, phone_1, address) VALUES (1, "shyamvertexpvt@gmail.com", "+91 87993-03431", "Vadodara, Gujarat")', (err) => {
+                    if (err) console.error('Seed Contact Error:', err.message);
+                    else console.log('Contact info seeded.');
+                });
+            }
+        });
+    }, 10000); // 10 seconds delay following startup to ensure DB is ready
 };
 
 db.connect((err) => {
@@ -147,10 +176,11 @@ db.connect((err) => {
         console.log('Using IN-MEMORY STORAGE (Fallback Mode).');
         console.log('---------------------------------------------------');
         dbConnected = false;
-        return;
+        // Don't early return, try to initialize tables anyway if possible or handle it later
+    } else {
+        console.log('Connected to MySQL database.');
+        dbConnected = true;
     }
-    console.log('Connected to MySQL database.');
-    dbConnected = true;
     initializeDatabase();
 });
 

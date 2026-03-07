@@ -168,6 +168,9 @@ const AdminPage = () => {
                             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
                             <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">System Online</span>
                         </div>
+                        <div className="px-3 py-1 bg-slate-100 rounded text-[9px] font-mono text-slate-500 border border-slate-200">
+                            API: {import.meta.env.VITE_API_URL || "AUTO_DETECTED"}
+                        </div>
                     </div>
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
                         Directory <span className="text-slate-200">/</span> <span className="text-blue-600">{activeTab.toUpperCase()}</span>
