@@ -18,6 +18,19 @@ const apiDiscoveryList = [
 const AdminPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [discoveryResults, setDiscoveryResults] = useState({});
+    const [manualUrl, setManualUrl] = useState(localStorage.getItem('SHYAM_API_OVERRIDE') || '');
+
+    const saveManualUrl = () => {
+        if (manualUrl) {
+            localStorage.setItem('SHYAM_API_OVERRIDE', manualUrl);
+            alert('URL Saved! Refreshing page to apply...');
+            window.location.reload();
+        } else {
+            localStorage.removeItem('SHYAM_API_OVERRIDE');
+            alert('Override cleared. Using default auto-detection.');
+            window.location.reload();
+        }
+    };
 
     // Auto-discover backend on mount
     React.useEffect(() => {
@@ -203,6 +216,23 @@ const AdminPage = () => {
                                     {url.split('://')[1].substring(0, 15)}... : {discoveryResults[url] || 'TESTING'}
                                 </div>
                             ))}
+                        </div>
+
+                        {/* Manual Override Field */}
+                        <div className="flex items-center gap-2 ml-4">
+                            <input
+                                type="text"
+                                value={manualUrl}
+                                onChange={(e) => setManualUrl(e.target.value)}
+                                placeholder="Paste Railway URL here"
+                                className="text-[10px] px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg w-48 focus:border-blue-500 outline-none"
+                            />
+                            <button
+                                onClick={saveManualUrl}
+                                className="bg-blue-600 text-white text-[10px] px-3 py-1.5 rounded-lg hover:bg-blue-700 font-bold uppercase tracking-tight"
+                            >
+                                Set Backend
+                            </button>
                         </div>
                     </div>
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
