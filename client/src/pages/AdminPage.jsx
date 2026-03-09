@@ -8,8 +8,36 @@ import AdminBlogs from '../components/admin/AdminBlogs';
 import API_URL from '../config';
 import AdminContact from '../components/admin/AdminContact';
 
+const apiDiscoveryList = [
+    'https://amusing-vitality-production.up.railway.app',
+    'https://shyamvertex-production.up.railway.app',
+    'https://server-production.up.railway.app',
+    'https://shyamvertex-server-production.up.railway.app'
+];
+
 const AdminPage = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [discoveryResults, setDiscoveryResults] = useState({});
+
+    // Auto-discover backend on mount
+    React.useEffect(() => {
+        if (isAuthenticated) {
+            apiDiscoveryList.forEach(url => {
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.message && data.message.includes('SHYAM VERTEX')) {
+                            setDiscoveryResults(prev => ({ ...prev, [url]: 'ONLINE (MATCH)' }));
+                        } else {
+                            setDiscoveryResults(prev => ({ ...prev, [url]: 'ONLINE (WRONG APP)' }));
+                        }
+                    })
+                    .catch(() => {
+                        setDiscoveryResults(prev => ({ ...prev, [url]: 'OFFLINE' }));
+                    });
+            });
+        }
+    }, [isAuthenticated]);
     const [password, setPassword] = useState('');
     const [activeTab, setActiveTab] = useState('jobs');
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -169,8 +197,12 @@ const AdminPage = () => {
                             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
                             <span className="text-[10px] font-bold text-blue-600 uppercase tracking-widest">System Online</span>
                         </div>
-                        <div className="px-3 py-1 bg-slate-100 rounded text-[9px] font-mono text-slate-500 border border-slate-200">
-                            API: {API_URL}
+                        <div className="flex gap-2">
+                            {apiDiscoveryList.map(url => (
+                                <div key={url} className={`px-2 py-0.5 rounded text-[8px] font-mono border ${discoveryResults[url] === 'ONLINE (MATCH)' ? 'bg-green-50 border-green-200 text-green-600' : 'bg-slate-50 border-slate-200 text-slate-400 opacity-50'}`}>
+                                    {url.split('://')[1].substring(0, 15)}... : {discoveryResults[url] || 'TESTING'}
+                                </div>
+                            ))}
                         </div>
                     </div>
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
