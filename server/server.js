@@ -102,6 +102,7 @@ const initializeDatabase = () => {
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(100),
             email VARCHAR(100),
+            phone VARCHAR(50),
             subject VARCHAR(255),
             message TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -214,38 +215,42 @@ app.get('/api/debug-status', (req, res) => {
 
 // Contact Form Submission Route
 app.post('/api/contact', (req, res) => {
-    const { name, email, subject, message } = req.body;
+    const { name, email, phone, message } = req.body;
 
-    // 1. Basic format validation
+    // 1. Mandatory field check
+    if (!name || !email || !phone) {
+        return res.status(400).json({ message: 'Name, Email, and Phone are mandatory' });
+    }
+
+    // 2. Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         return res.status(400).json({ message: 'Invalid email format' });
     }
 
-    const query = 'INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)';
-    db.query(query, [name, email, subject, message], (err, result) => {
+    const query = 'INSERT INTO contact_messages (name, email, phone, message) VALUES (?, ?, ?, ?)';
+    db.query(query, [name, email, phone, message], (err, result) => {
         if (err) console.error('DB Error:', err);
     });
 
-    // 2. Send Emails (Resend API)
-    // Using async/await inside the route handler
+    // 3. Send Emails (Resend API)
     (async () => {
         try {
             // Admin Notification (Priority)
             const adminData = await resend.emails.send({
                 from: 'Shyam Vertex <onboarding@resend.dev>',
-                to: process.env.ADMIN_EMAIL || 'shyamvertexpvt@gmail.com', // Configurable via Environment Variable // Restricted to this address in Resend Testing Mode
-                subject: `New Contact Message: ${subject} - ${name}`,
+                to: process.env.ADMIN_EMAIL || 'shyamvertexpvt@gmail.com',
+                subject: `New Contact Message from ${name}`,
                 html: `
                     <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; padding: 20px; border-radius: 8px;">
                         <h2 style="color: #022c22; text-align: center;">New Contact Message</h2>
                         <hr style="border: 0; border-top: 2px solid #D4AF37; margin: 20px 0;">
                         <p><strong>Name:</strong> ${name}</p>
                         <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
-                        <p><strong>Subject:</strong> ${subject}</p>
+                        <p><strong>Phone:</strong> ${phone}</p>
                         <div style="background-color: #f9f9f9; padding: 15px; border-left: 4px solid #022c22; margin-top: 20px;">
-                            <p><strong>Message:</strong></p>
-                            <p>${message.replace(/\n/g, '<br>')}</p>
+                            <p><strong>Message / Details:</strong></p>
+                            <p>${(message || '').replace(/\n/g, '<br>')}</p>
                         </div>
                         <p style="margin-top: 30px; font-size: 12px; color: #777; text-align: center;">Sent from Shyam Vertex Website via Resend</p>
                     </div>
@@ -265,7 +270,7 @@ app.post('/api/contact', (req, res) => {
                         <div style="font-family: Arial, sans-serif; padding: 20px;">
                             <h2 style="color: #022c22;">Message Received</h2>
                             <p>Hello ${name},</p>
-                            <p>Thank you for contacting us. We have received your message regarding "<strong>${subject}</strong>".</p>
+                            <p>Thank you for contacting us. We have received your message.</p>
                             <p>Our team will get back to you shortly.</p>
                             <br>
                             <p>Best Regards,<br>Shyam Vertex Team</p>
@@ -277,12 +282,10 @@ app.post('/api/contact', (req, res) => {
                 }
             }
 
-            // Success response
             return res.status(200).json({ message: 'Message sent successfully' });
 
         } catch (error) {
             console.error('Error sending contact emails:', error);
-            // Still return success for UX
             return res.status(200).json({ message: 'Message sent successfully' });
         }
     })();

@@ -64,7 +64,7 @@ const Services = () => {
             try {
                 const res = await fetch(`${API_URL}/api/services`);
                 const data = await res.json();
-                if (Array.isArray(data) && data.length > 0) {
+                if (Array.isArray(data)) {
                     setServices(data);
                 } else {
                     setServices(staticServices);

@@ -22,7 +22,7 @@ const Footer = () => {
 
         const resize = () => {
             canvas.width = window.innerWidth;
-            canvas.height = window.innerWidth < 768 ? 350 : 500;
+            canvas.height = window.innerWidth < 768 ? 600 : 500;
         };
 
         const draw = (time) => {
@@ -155,7 +155,7 @@ const Footer = () => {
                 if (phase < 1000) slideProgress = phase / 1000; // Slide in (1s)
                 else if (phase > 4000) slideProgress = (5000 - phase) / 1000; // Slide out (1s)
                 else slideProgress = 1; // Stay
-                robotX = -100 + (slideProgress * 250); // From -100 to 150
+                robotX = -100 + (slideProgress * (canvas.width < 768 ? 180 : 250)); 
             } else if (phase >= 6000 && phase < 11000) { // Right Side Phase (5s)
                 isVisible = true;
                 side = 'right';
@@ -163,12 +163,12 @@ const Footer = () => {
                 if (rightPhase < 1000) slideProgress = rightPhase / 1000;
                 else if (rightPhase > 4000) slideProgress = (5000 - rightPhase) / 1000;
                 else slideProgress = 1;
-                robotX = canvas.width + 100 - (slideProgress * 250); // From width+100 to width-150
+                robotX = canvas.width + 100 - (slideProgress * (canvas.width < 768 ? 180 : 250));
             }
 
             if (isVisible) {
-                const robotScale = canvas.width < 768 ? 0.8 : 1;
-                const robotBaseY = canvas.height - (canvas.width < 768 ? 70 : 100);
+                const robotScale = canvas.width < 768 ? 0.6 : 1;
+                const robotBaseY = canvas.height - (canvas.width < 768 ? 40 : 100);
                 const floatY = Math.sin(time / 400) * 8;
 
                 ctx.save();

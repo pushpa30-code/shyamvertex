@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Target, Award, Users } from 'lucide-react';
 
 const About = () => {
@@ -14,7 +15,12 @@ const About = () => {
                 </div>
 
                 <div className="grid md:grid-cols-2 gap-12 items-center mb-16 px-4 md:px-8">
-                    <div>
+                    <motion.div
+                        initial={{ opacity: 0, x: -30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                    >
                         <h3 className="text-3xl font-bold mb-8 text-primary">Our Story</h3>
                         <p className="text-accent text-lg leading-relaxed mb-8 font-light">
                             Founded with a vision to redefine the IT landscape, <span className="text-white font-bold tracking-tight px-1 text-xl">Shyam<span className="text-primary">Vertex</span></span> has grown from a small consultancy to a full-service technology partner.
@@ -23,12 +29,18 @@ const About = () => {
                         <p className="text-gray-600 leading-relaxed font-light border-l-4 border-primary pl-4 italic bg-primary/5 p-4 rounded-r-lg">
                             "Go Vertex, Go Beyond" isn't just a slogan; it's our ethos. We strive to reach the pinnacle of innovation and then push even further.
                         </p>
-                    </div>
-                    <div className="bg-dark/50 backdrop-blur-xl p-10 md:p-12 rounded-[2rem] shadow-2xl border border-white/5 relative overflow-hidden group">
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, x: 30 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                        className="bg-dark/50 backdrop-blur-xl p-6 md:p-12 rounded-[2rem] shadow-2xl border border-white/5 relative overflow-hidden group"
+                    >
                         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] group-hover:bg-primary/10 transition-all duration-500"></div>
-                        <h3 className="text-2xl font-bold mb-10 text-white flex items-center gap-3">
-                            <span className="w-12 h-1 bg-primary rounded-full"></span>
-                            Why Choose <span className="text-primary">Us?</span>
+                        <h3 className="text-xl md:text-2xl font-bold mb-10 text-white flex items-center gap-3">
+                            <span className="w-8 md:w-12 h-1 bg-primary rounded-full shrink-0"></span>
+                            <span>Why Choose <span className="text-primary">Us?</span></span>
                         </h3>
                         <ul className="space-y-8 relative z-10">
                             <li className="flex items-start group">
@@ -50,11 +62,16 @@ const About = () => {
                                 </div>
                             </li>
                         </ul>
-                    </div>
+                    </motion.div>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                    <div className="bg-dark/40 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-white/5 hover:border-primary/30 hover:shadow-primary/5 transition-all duration-500 text-center group">
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="bg-dark/40 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-white/5 hover:border-primary/30 hover:shadow-primary/5 transition-all duration-500 text-center group"
+                    >
                         <div className="inline-flex p-5 rounded-3xl bg-primary/10 mb-8 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
                             <Target className="h-10 w-10 text-primary" />
                         </div>
@@ -62,8 +79,14 @@ const About = () => {
                         <p className="text-accent font-light leading-relaxed text-lg">
                             To empower businesses with innovative technology solutions that drive growth and sustainable success.
                         </p>
-                    </div>
-                    <div className="bg-dark/40 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-white/5 hover:border-primary/30 hover:shadow-primary/5 transition-all duration-500 text-center group">
+                    </motion.div>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.1 }}
+                        className="bg-dark/40 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-white/5 hover:border-primary/30 hover:shadow-primary/5 transition-all duration-500 text-center group"
+                    >
                         <div className="inline-flex p-5 rounded-3xl bg-secondary/10 mb-8 group-hover:scale-110 group-hover:bg-secondary/20 transition-all duration-300">
                             <Users className="h-10 w-10 text-secondary" />
                         </div>
@@ -71,8 +94,14 @@ const About = () => {
                         <p className="text-accent font-light leading-relaxed text-lg">
                             To be a global leader in IT consultancy and development, known for our integrity, innovation, and impact.
                         </p>
-                    </div>
-                    <div className="bg-dark/40 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-white/5 hover:border-primary/30 hover:shadow-primary/5 transition-all duration-500 text-center group">
+                    </motion.div>
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="bg-dark/40 backdrop-blur-md p-10 rounded-3xl shadow-xl border border-white/5 hover:border-primary/30 hover:shadow-primary/5 transition-all duration-500 text-center group"
+                    >
                         <div className="inline-flex p-5 rounded-3xl bg-primary/10 mb-8 group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
                             <Award className="h-10 w-10 text-primary" />
                         </div>
@@ -80,7 +109,7 @@ const About = () => {
                         <p className="text-accent font-light leading-relaxed text-lg">
                             Innovation, Integrity, Collaboration, and Customer Success are the pillars of our organization.
                         </p>
-                    </div>
+                    </motion.div>
                 </div>
             </div>
         </section>

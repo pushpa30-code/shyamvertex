@@ -48,7 +48,7 @@ const Partners = () => {
                                 <img
                                     src={partner.logo}
                                     alt={partner.name}
-                                    className="h-10 md:h-14 w-auto object-contain filter grayscale invert opacity-50 group-hover:opacity-100 transition-all duration-300"
+                                    className="h-12 md:h-16 w-auto object-contain filter grayscale-[0.5] invert opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-300"
                                 />
                             ) : (
                                 <span className="text-xl md:text-2xl font-bold text-accent font-serif tracking-tight group-hover:text-primary transition-colors">

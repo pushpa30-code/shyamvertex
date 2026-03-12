@@ -70,12 +70,12 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="bg-dark/80 backdrop-blur-md text-white sticky top-0 z-50 shadow-2xl border-b border-white/5">
+        <nav className="bg-dark/80 backdrop-blur-md text-white sticky top-0 z-[100] shadow-2xl border-b border-white/5">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-20">
                     <div className="flex items-center">
-                        <Link to="/" className="flex items-center gap-2 group">
-                            <img src={logo} alt="Shyam Vertex Logo" className="h-10 md:h-16 w-auto object-contain" />
+                        <Link to="/" className="flex items-center gap-2 group transition-transform active:scale-95">
+                            <img src={logo} alt="Shyam Vertex Logo" className="h-14 md:h-16 w-auto object-contain drop-shadow-2xl" />
                             <span className="font-bold text-xl md:text-2xl tracking-tight text-white flex items-center gap-1 group-hover:text-primary transition-all">
                                 Shyam<span className="text-primary">Vertex</span>
                             </span>

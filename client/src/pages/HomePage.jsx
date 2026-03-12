@@ -14,10 +14,10 @@ import Contact from '../components/Contact';
 const FadeInSection = ({ children }) => {
     return (
         <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }} // Requires 20% of section to be visible before animating
-            transition={{ duration: 0.4, ease: "easeOut" }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
         >
             {children}
         </motion.div>

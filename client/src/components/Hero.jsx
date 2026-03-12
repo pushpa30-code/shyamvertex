@@ -15,10 +15,10 @@ const Hero = () => {
                     muted
                     playsInline
                     preload="auto"
-                    className="w-full h-full object-cover opacity-50 transition-opacity duration-1000"
+                    className="w-full h-full object-cover md:object-cover opacity-50"
                     style={{
-                        willChange: 'transform',
-                        filter: 'brightness(0.5) contrast(1.1)'
+                        filter: 'brightness(0.4) contrast(1.1)',
+                        objectPosition: 'center center'
                     }}
                 >
                     <source src={handshakeVideo} type="video/mp4" />
@@ -71,7 +71,7 @@ const Hero = () => {
                                     transition: { duration: 1, ease: [0.16, 1, 0.3, 1] }
                                 }
                             }}
-                            className="text-2xl sm:text-4xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[0.9] md:leading-[0.8] drop-shadow-2xl uppercase"
+                            className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter text-white leading-[1] md:leading-[0.8] drop-shadow-2xl uppercase"
                         >
                             Architecting the <br />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-white to-primary animate-gradient-x">
@@ -85,7 +85,7 @@ const Hero = () => {
                             hidden: { opacity: 0, y: 30 },
                             visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } }
                         }}
-                        className="text-base sm:text-lg md:text-2xl font-bold text-white max-w-3xl mx-auto leading-tight drop-shadow-xl tracking-tight"
+                        className="text-xl sm:text-2xl md:text-2xl font-bold text-white max-w-3xl mx-auto leading-tight drop-shadow-xl tracking-tight"
                     >
                         Go Vertex, <span className="text-primary italic">Go Beyond</span>
                     </motion.p>
@@ -95,7 +95,7 @@ const Hero = () => {
                             hidden: { opacity: 0 },
                             visible: { opacity: 1, transition: { duration: 1 } }
                         }}
-                        className="text-sm sm:text-base md:text-xl font-medium text-slate-300 max-w-2xl mx-auto leading-relaxed drop-shadow-lg"
+                        className="text-base sm:text-lg md:text-xl font-medium text-slate-300 max-w-2xl mx-auto leading-relaxed drop-shadow-lg px-4"
                     >
                         We engineer high-performance digital ecosystems, turning complex challenges into seamless digital experiences.
                     </motion.p>

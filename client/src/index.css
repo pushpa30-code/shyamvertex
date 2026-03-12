@@ -5,6 +5,12 @@
 @layer base {
   body {
     @apply bg-accent text-slate-900 font-sans;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  .will-change-gpu {
+    will-change: transform, opacity;
   }
 
   h1,

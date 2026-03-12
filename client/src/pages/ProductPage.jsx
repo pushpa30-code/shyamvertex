@@ -13,15 +13,15 @@ const ProductPage = () => {
         hidden: { opacity: 0 },
         visible: {
             opacity: 1,
-            transition: { staggerChildren: 0.1, delayChildren: 0.1 }
+            transition: { staggerChildren: 0.05 }
         }
     };
 
     const itemVariants = {
-        hidden: { opacity: 0, y: 20 },
+        hidden: { opacity: 0, y: 15 },
         visible: {
             opacity: 1, y: 0,
-            transition: { duration: 0.5, ease: "easeOut" }
+            transition: { type: "spring", stiffness: 100, damping: 20 }
         }
     };
 
@@ -62,10 +62,10 @@ const ProductPage = () => {
                         muted
                         playsInline
                         preload="auto"
-                        className="w-full h-full object-cover opacity-75"
+                        className="w-full h-full object-cover opacity-60"
                         style={{
-                            willChange: 'transform',
-                            filter: 'brightness(0.5) contrast(1.1) saturate(0.9)'
+                            filter: 'brightness(0.35) contrast(1.1)',
+                            objectPosition: 'center center'
                         }}
                     >
                         <source src={robotHandshakeVideo} type="video/mp4" />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Quote } from 'lucide-react';
 
 const testimonials = [
@@ -30,7 +31,14 @@ const Testimonials = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {testimonials.map((testimonial, index) => (
-                        <div key={index} className="bg-[#09090b] p-10 rounded-[2rem] relative border border-white/5 shadow-2xl hover:border-primary/20 transition-all duration-300 overflow-hidden group">
+                        <motion.div 
+                            key={index} 
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: index * 0.1 }}
+                            className="bg-[#09090b] p-10 rounded-[2rem] relative border border-white/5 shadow-2xl hover:border-primary/20 transition-all duration-300 overflow-hidden group"
+                        >
                             <div className="absolute -top-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-[40px] group-hover:bg-primary/10 transition-all duration-300"></div>
                             <Quote className="h-12 w-12 text-primary/10 absolute top-6 right-6 group-hover:text-primary/20 transition-all duration-300" />
                             <p className="text-white/60 mb-8 text-lg leading-relaxed relative z-10">"{testimonial.content}"</p>
@@ -43,7 +51,7 @@ const Testimonials = () => {
                                     <p className="text-sm text-accent font-light">{testimonial.role}</p>
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
                 </div>
             </div>
